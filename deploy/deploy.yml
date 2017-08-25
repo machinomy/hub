@@ -1,0 +1,15 @@
+---
+- hosts: all
+  gather_facts: true
+
+  vars:
+    hub_path: '~/hub'
+
+  tasks:
+    - name: hub
+      git:
+        repo: git@github.com:machinomy/hub.git
+        dest: "{{ hub_path }}"
+        update: yes
+        force: yes
+        accept_hostkey: yes
