@@ -9,5 +9,10 @@ let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 web3.personal.unlockAccount(settings.account, settings.password, 1000)
 const hub = new Hub(web3, settings.account, null)
 
-router.post('/machinomy', hub.payment());
-router.get('/verify', hub.verify());
+router.post('/machinomy', hub.payment())
+
+router.get('/verify', hub.verify())
+
+router.get('/isalive', (req: express.Request, res: express.Response, next: express.NextFunction):any => {
+  res.send('yes')
+});
