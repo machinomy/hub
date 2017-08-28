@@ -22,6 +22,6 @@
       args:
         chdir: "{{ hub_path }}"
 
-    - command: NODE_ENV=staging PORT=3001 pm2 restart bin/www.js
+    - command: pm2 restart ecosystem.json --env staging
       args:
         chdir: "{{ hub_path }}"
