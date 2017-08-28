@@ -1,9 +1,9 @@
 import * as express from 'express';
 export let router = express.Router();
 
-import {Hub} from '../../machinomy/lib/hub'
+import {Hub} from 'machinomy/lib/hub'
 import Web3 = require('web3')
-import machinomy from '../../machinomy/index'
+import machinomy from 'machinomy/index'
 let settings = machinomy.configuration.receiver()
 let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 web3.personal.unlockAccount(settings.account, settings.password, 1000)

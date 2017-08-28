@@ -87,16 +87,16 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^8.0.9":
-  version "8.0.24"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.24.tgz#06c580084d9add1fb40c1510ef0b448961246fb1"
+  version "8.0.25"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.25.tgz#66ecaf4df93f5281b48427ee96fbcdfc4f0cdce1"
 
 "@types/node@8.0.9":
   version "8.0.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.9.tgz#19f44c3b6cb8a70d261d366f73650e3e3891ab2d"
 
 "@types/request@^2.0.0":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@types/request/-/request-2.0.2.tgz#d2cb5684e994e744afbc2c90df989b904133ff65"
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-2.0.3.tgz#bdf0fba9488c822f77e97de3dd8fe357b2fb8c06"
   dependencies:
     "@types/form-data" "*"
     "@types/node" "*"
@@ -1807,8 +1807,8 @@ es3ify@^0.1.3:
     through "~2.3.4"
 
 es5-ext@^0.10.14, es5-ext@^0.10.9, es5-ext@~0.10.14:
-  version "0.10.29"
-  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.29.tgz#768eb2dfc4957bcf35fa0568f193ab71ede53fd8"
+  version "0.10.30"
+  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.30.tgz#7141a16836697dbabfaaaeee41495ce29f52c939"
   dependencies:
     es6-iterator "2"
     es6-symbol "~3.1"
@@ -2294,8 +2294,8 @@ forever-agent@~0.6.1:
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
 
 form-data@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.2.0.tgz#9a5e3b9295f980b2623cf64fa238b14cebca707b"
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.1.tgz#6fb94fbd71885306d73d15cc497fe4cc4ecd44bf"
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.5"
@@ -2367,9 +2367,13 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-function-bind@^1.0.2, function-bind@^1.1.0, function-bind@~1.1.0:
+function-bind@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.0.tgz#16176714c801798e4e8f2cf7f7529467bb4a5771"
+
+function-bind@^1.1.0, function-bind@~1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
 
 functional-red-black-tree@^1.0.1:
   version "1.0.1"
@@ -3849,9 +3853,9 @@ ltgt@~2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/ltgt/-/ltgt-2.1.3.tgz#10851a06d9964b971178441c23c9e52698eece34"
 
-machinomy@next:
-  version "1.0.0-alpha.39"
-  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.0.0-alpha.39.tgz#6efdc3b2fbe42b46e4d031e57d2996bcfef752c9"
+"machinomy@https://github.com/machinomy/machinomy#master":
+  version "1.0.0-alpha.37"
+  resolved "https://github.com/machinomy/machinomy#07edb3a715535f3a76f5dbc293030a4d02075aab"
   dependencies:
     "@types/bignumber.js" "^4.0.2"
     "@types/bluebird" "3.5.8"
@@ -5484,8 +5488,8 @@ sntp@1.x.x:
     hoek "2.x.x"
 
 solc@^0.4.2:
-  version "0.4.15"
-  resolved "https://registry.yarnpkg.com/solc/-/solc-0.4.15.tgz#8ae8f1606a124a3f81c28b9dcecb0964ebdf9f25"
+  version "0.4.16"
+  resolved "https://registry.yarnpkg.com/solc/-/solc-0.4.16.tgz#809a5b1257c7c200e11a841b377eaec274698539"
   dependencies:
     fs-extra "^0.30.0"
     memorystream "^0.3.1"

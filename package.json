@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/gulp watch",
-    "postinstall": "./node_modules/.bin/typings install",
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
@@ -24,7 +23,7 @@
     "gulp-shell": "^0.6.3",
     "gulp-webpack": "^1.5.0",
     "jquery": "^3.2.1",
-    "machinomy": "next",
+    "machinomy": "https://github.com/machinomy/machinomy#master",
     "morgan": "~1.6.1",
     "pug": "^2.0.0-beta3",
     "serve-favicon": "~2.3.0",
