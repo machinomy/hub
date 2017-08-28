@@ -30,6 +30,17 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
   next(err);
 });
 
+if (app.get('env') === 'staging') {
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.log(err.message)
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
 // error handlers
 
 // development error handler
