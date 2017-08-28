@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/gulp watch",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "deploy": "ansible-playbook -i deploy/hosts deploy/deploy.yml"
   },
   "dependencies": {
     "@types/body-parser": "^1.16.4",

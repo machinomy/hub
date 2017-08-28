@@ -13,3 +13,15 @@
         update: yes
         force: yes
         accept_hostkey: yes
+
+    - command: yarn install
+      args:
+        chdir: "{{ hub_path }}"
+
+    - command: yarn run build
+      args:
+        chdir: "{{ hub_path }}"
+
+    - command: NODE_ENV=staging PORT=3001 pm2 restart bin/www.js
+      args:
+        chdir: "{{ hub_path }}"
