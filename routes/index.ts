@@ -10,7 +10,7 @@ import { ChannelContract, PaymentChannel } from 'machinomy/lib/channel'
 import { digest, sign } from "machinomy/lib/Payment";
 let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
 let settings = machinomy.configuration.receiver()
-// web3.personal.unlockAccount(settings.account, settings.password, 1000)
+web3.personal.unlockAccount(settings.account, settings.password, 1000)
 let storage = new Storage(web3, settings.databaseFile, "receiver", false, settings.engine);
 const hub = new Hub(web3, settings.account, storage);
 
