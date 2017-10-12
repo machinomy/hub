@@ -4,13 +4,14 @@ export let router = express.Router();
 import {Hub} from 'machinomy/lib/hub'
 import Storage from 'machinomy/lib/storage'
 import Web3 = require('web3')
-import machinomy from 'machinomy/lib/buy'
+import * as configuration from 'machinomy/lib/configuration'
 import mongo from 'machinomy/lib/mongo'
 import { ChannelContract, PaymentChannel } from 'machinomy/lib/channel'
 import { digest, sign } from "machinomy/lib/Payment";
 let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-let settings = machinomy.configuration.receiver()
-web3.personal.unlockAccount(settings.account, settings.password, 1000)
+let settings = configuration.receiver()
+// web3.personal.unlockAccount(settings.account, settings.password, 1000)
+console.log(settings)
 let storage = new Storage(web3, settings.databaseFile, "receiver", false, settings.engine);
 const hub = new Hub(web3, settings.account, storage);
 
