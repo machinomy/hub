@@ -53,8 +53,8 @@ export default class PaymentService {
   }
 
   async verify (meta: string, token: string, price: number): Promise<boolean> {
-    let res = await this.findOne({meta})
-    if (res && res.token === token) {
+    let res = await this.findOne({meta, token})
+    if (res) {
       let payment = await this.machinomy.paymentById(token)
       if (payment && payment.price == price) {
         return true

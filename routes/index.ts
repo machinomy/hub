@@ -19,9 +19,9 @@ mongo.connectToServer().then(() => {
   })
 
   router.get('/verify', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    let meta: string = req.body.meta
-    let token: string = req.body.token
-    let price: number = Number(req.body.price)
+    let meta: string = req.query.meta
+    let token: string = req.query.token
+    let price: number = Number(req.query.price)
     let isOk = await paymentService.verify(meta, token, price)
     if (isOk) {
       res.status(200).send({ status: 'ok' })
