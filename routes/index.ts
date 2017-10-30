@@ -1,28 +1,28 @@
-import * as express from 'express'
-export let router = express.Router()
-
-import Web3 = require('web3')
-import Payment from 'machinomy/lib/Payment'
-import * as configuration from 'machinomy/lib/configuration'
+import express = require('express')
+import {Router} from "express-serve-static-core";
 import mongo from 'machinomy/lib/mongo'
-import Machinomy from 'machinomy'
+import PaymentService from '../services/PaymentService'
+const router = express.Router()
+require('dotenv').config()
 
-let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
-let settings = configuration.receiver()
-// web3.personal.unlockAccount(settings.account, settings.password, 1000)
-let machinomy = new Machinomy(settings.account, web3, { engine: 'mongo' })
+const RECEIVER = process.env.RECEIVER
+if (!RECEIVER) throw new Error('Please, set RECEIVER env variable')
+const ETHEREUM_API = process.env.ETHEREUM_API
+if (!ETHEREUM_API) throw new Error('Please, set RECEIVER env variable')
+let paymentService = new PaymentService(RECEIVER, ETHEREUM_API)
 
 mongo.connectToServer().then(() => {
   router.post('/machinomy', async (req: express.Request, res: express.Response, next: Function) => {
-    let payment = new Payment(req.body)
-    let token = await machinomy.acceptPayment(payment)
+    console.log(req.body)
+    let token = await paymentService.acceptPayment(req.body)
     res.status(202).header('Paywall-Token', token).send('Accepted').end()
   })
 
   router.get('/verify', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    let token: string = req.body.token
-    let isOk = false
-    isOk = await machinomy.verifyToken(token)
+    let meta: string = req.query.meta
+    let token: string = req.query.token
+    let price: number = Number(req.query.price)
+    let isOk = await paymentService.verify(meta, token, price)
     if (isOk) {
       res.status(200).send({ status: 'ok' })
     } else {
@@ -34,3 +34,5 @@ mongo.connectToServer().then(() => {
 router.get('/isalive', (req: express.Request, res: express.Response, next: express.NextFunction): any => {
   res.send('yes')
 });
+
+export {router}

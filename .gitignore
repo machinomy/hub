@@ -29,7 +29,8 @@ benchmarks/graphs
 .vagrant
 
 config/development.json
-app.js
-bin/**/*.js
-public/**/*.js
-routes/**/*.js
+**/*.d.ts
+**/*.js
+**/*.js.map
+
+.env
