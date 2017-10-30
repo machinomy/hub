@@ -1,4 +1,6 @@
-import * as express from 'express';
+import express = require('express')
+import {Express} from "express-serve-static-core";
+
 import * as path from 'path';
 import * as favicon from 'serve-favicon';
 import * as logger from 'morgan';

@@ -18,6 +18,10 @@
       args:
         chdir: "{{ hub_path }}"
 
+    - command: yarn link machinomy
+      args:
+        chdir: "{{ hub_path }}"
+
     - command: yarn run build
       args:
         chdir: "{{ hub_path }}"
