@@ -21,7 +21,7 @@ export interface MetaPayment {
   r: string
   s: string
   contractAddress?: string
-  meta?: string
+  meta: string
 } 
 
 export interface HubToken {
