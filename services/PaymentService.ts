@@ -5,6 +5,7 @@ import Web3 = require('web3')
 import Payment from 'machinomy/lib/Payment'
 import mongo from 'machinomy/lib/mongo'
 import Machinomy from 'machinomy'
+import BigNumber from 'bignumber.js'
 const router = express.Router()
 require('dotenv').config()
 
@@ -14,9 +15,9 @@ export interface MetaPayment {
   channelId: string
   sender: string
   receiver: string
-  price: number
-  value: number
-  channelValue: number
+  price: BigNumber
+  value: BigNumber
+  channelValue: BigNumber
   v: number
   r: string
   s: string
@@ -38,25 +39,24 @@ export default class PaymentService {
   }
 
   async acceptPayment (metaPayment: MetaPayment): Promise <string> {
-    let meta 
+    let meta
     if (metaPayment.meta) {
       meta = metaPayment.meta.slice(0)
       delete metaPayment.meta
     }
     let payment = new Payment(metaPayment)
     let token = await this.machinomy.acceptPayment(payment)
-    
     if (meta) {
       await this.insert({meta, token})
     }
     return token
   }
 
-  async verify (meta: string, token: string, price: number): Promise<boolean> {
+  async verify (meta: string, token: string, price: BigNumber): Promise<boolean> {
     let res = await this.findOne({meta, token})
     if (res) {
       let payment = await this.machinomy.paymentById(token)
-      if (payment && payment.price == price) {
+      if (payment && payment.price.equals(price)) {
         return true
       }
     }
