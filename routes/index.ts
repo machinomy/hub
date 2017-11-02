@@ -13,7 +13,6 @@ let paymentService = new PaymentService(RECEIVER, ETHEREUM_API)
 
 mongo.connectToServer().then(() => {
   router.post('/machinomy', async (req: express.Request, res: express.Response, next: Function) => {
-    console.log(req.body)
     let token = await paymentService.acceptPayment(req.body)
     res.status(202).header('Paywall-Token', token).send('Accepted').end()
   })
