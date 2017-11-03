@@ -2,7 +2,7 @@
 Hub provide [Machinomy](https://github.com/machinomy/machinomy) compatible API for payment acceptance and verification.
 
 ## API
-Follow [documentation](https://hub.machinomy.com/documentation) for more information.
+Follow [documentation](https://staging-hub.machinomy.com/documentation) for more information.
 
 ## Development
 Create .env file at the root of the project and set RECEIVER, RECEIVER_PASSWORD, ETHEREUM_API and PORT variables. See [example.env](https://github.com/machinomy/hub/blob/master/example.env) for example.
