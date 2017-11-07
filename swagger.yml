@@ -24,11 +24,9 @@ paths:
         202:
           description: Accepted
           headers:
-            -
-              Paywall-Token:
-                schema:
-                  type: string
-                description: Uniq token.
+            Paywall-Token:
+              type: string
+              description: Uniq token.
         403:
           description: Error
           content:
