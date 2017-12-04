@@ -9,6 +9,7 @@
   },
   "types": "index.d.ts",
   "dependencies": {
+    "@types/bignumber.js": "^4.0.3",
     "@types/body-parser": "^1.16.4",
     "@types/chai": "^4.0.4",
     "@types/cookie-parser": "^1.4.0",

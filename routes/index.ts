@@ -2,6 +2,7 @@ import express = require('express')
 import {Router} from "express-serve-static-core";
 import mongo from 'machinomy/lib/mongo'
 import PaymentService from '../services/PaymentService'
+import BigNumber from 'bignumber.js'
 const router = express.Router()
 require('dotenv').config()
 
@@ -24,7 +25,7 @@ mongo.connectToServer().then(() => {
   router.get('/verify', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     let meta: string = req.query.meta
     let token: string = req.query.token
-    let price: number = Number(req.query.price)
+    let price: BigNumber = new BigNumber(req.query.price)
     try {
       let isOk = await paymentService.verify(meta, token, price)
       if (isOk) {
