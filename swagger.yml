@@ -1,0 +1,106 @@
+swagger: "2.0"
+info:
+  description: Hub provides endpoints for acceptance and verification micropaymnets.
+  version: 1.0.0
+  title: Machinomy hub API
+basePath: /v1
+schemes:
+  - https
+paths:
+  /accept:
+    post:
+      operationId: acceptPayment
+      description: Save payment into the hub storage and generete uniq token that can be verified by another agent.
+      produces:
+        - application/json
+      parameters:
+        - name: payment
+          description: Machinomy compatible payment
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Payment'
+      responses:
+        202:
+          description: Accepted
+          headers:
+            Paywall-Token:
+              type: string
+              description: Uniq token.
+        403:
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+  /verify:
+    get:
+      description: Verify token that /accept returns.
+      produces:
+        - application/json
+      parameters:
+        - name: meta
+          description: Meta inforamtaion about the payment.
+          in: query
+          required: true
+          type: string
+        - name: token
+          description: Token generate by payment accept.
+          in: query
+          required: true
+          type: string
+        - name: price
+          description: The price that user paid.
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: Return ok if payment is valid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: ok string.
+        403:
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+definitions:
+  Payment:
+    properties:
+      channelId:
+        type: string
+      sender:
+        type: string
+      receiver:
+        type: string
+      price:
+        type: string
+      value:
+        type: string
+      channelValue:
+        type: string
+      v:
+        type: string
+      r:
+        type: string
+      s:
+        type: string
+      meta:
+        type: string
+      contractAddress:
+        type: string

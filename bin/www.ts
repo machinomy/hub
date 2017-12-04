@@ -5,6 +5,8 @@ import * as debugModule from 'debug';
 let debug = debugModule('temp:server');
 import * as http from 'http';
 
+require('dotenv').config()
+
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 

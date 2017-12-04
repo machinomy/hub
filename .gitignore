@@ -35,3 +35,5 @@ config/development.json
 
 .env
 .vscode
+
+!public/documentation/*
