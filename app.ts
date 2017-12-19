@@ -11,6 +11,10 @@ import { router as routes } from './routes/index';
 export let app = express();
 
 // view engine setup
+let exphbs = require('express-handlebars')
+let viewsPath = __dirname + '/views'
+let hbsConfig = { defaultLayout: 'main', layoutsDir: viewsPath + '/layouts/' }
+app.engine('handlebars', exphbs(hbsConfig))
 app.set('views', path.join(__dirname, 'views'));
 app.set('view options', { layout: false })
 app.set('view engine', 'handlebars')
