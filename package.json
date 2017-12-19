@@ -9,6 +9,7 @@
   },
   "types": "index.d.ts",
   "dependencies": {
+    "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
     "@types/bignumber.js": "^4.0.3",
     "@types/body-parser": "^1.16.4",
     "@types/chai": "^4.0.4",
