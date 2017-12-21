@@ -23,7 +23,7 @@ export interface MetaPayment {
   s: string
   contractAddress?: string
   meta: string
-} 
+}
 
 export interface HubToken {
   meta: string,
@@ -35,7 +35,7 @@ export default class PaymentService {
 
   constructor(receiver: string, ethereumAPI: string) {
     let web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
-    this.machinomy = new Machinomy(receiver, web3, { engine: 'nedb', databaseFile: 'hub' })
+    this.machinomy = new Machinomy(receiver, web3, { engine: 'mongo', databaseFile: 'hub' })
   }
 
   async acceptPayment (metaPayment: MetaPayment): Promise <string> {
@@ -60,7 +60,7 @@ export default class PaymentService {
         return true
       }
     }
-    return false  
+    return false
    }
 
   private findOne (query: any): Promise<HubToken> {
