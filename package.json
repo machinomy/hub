@@ -37,7 +37,7 @@
     "gulp-webpack": "^1.5.0",
     "handlebars": "^4.0.11",
     "jquery": "^3.2.1",
-    "machinomy": "^1.6.0-next",
+    "machinomy": "^1.6.0-next.1",
     "mocha": "^4.0.1",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
