@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import PaymentService from '../services/PaymentService'
-import mongo from 'machinomy/lib/mongo'
+import {EngineMongo} from 'machinomy/lib/engines/engine'
 import BigNumber from 'bignumber.js'
 
 let paymentObj = {
@@ -16,9 +16,11 @@ let paymentObj = {
   meta: 'meta_string'
 }
 
+let engineMongo: EngineMongo = new EngineMongo()
+
 describe('.PaymentService', () => {
   before((done) => {
-    mongo.connectToServer().then(() => {
+    engineMongo.connect().then(() => {
       done()
     }).catch((e: Error) => {
       console.log(e)
@@ -26,13 +28,13 @@ describe('.PaymentService', () => {
   })
 
   beforeEach((done) => {
-    mongo.db().dropDatabase(() => {
+    engineMongo.db().dropDatabase(() => {
       done()
     })
   })
 
   after((done) => {
-    mongo.db().close()
+    engineMongo.db().close()
     done()
   })
 

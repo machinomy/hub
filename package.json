@@ -45,7 +45,6 @@
     "ts-loader": "^2.3.2",
     "typescript": "^2.5.3",
     "web3": "^0.19.0",
-    "web3-typescript-typings": "^0.3.1",
     "webpack": "^3.4.1"
   },
   "devDependencies": {
@@ -56,7 +55,8 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-typescript": "^3.1.4",
     "tslint-config-standard": "^2.0.0",
-    "typings": "^2.1.0"
+    "typings": "^2.1.0",
+    "web3-typescript-typings": "^0.9.10"
   },
-  "name": "bred1"
+  "name": "mc_hub"
 }
