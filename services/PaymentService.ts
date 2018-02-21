@@ -9,7 +9,9 @@ import Machinomy from 'machinomy'
 import BigNumber from 'bignumber.js'
 import {AcceptPaymentResponse} from 'machinomy/lib/client'
 import Signature from 'machinomy/lib/signature'
+const  ethutils = require( 'ethereumjs-util')
 const router = express.Router()
+
 require('dotenv').config()
 
 const COLLECTION = 'hub'
@@ -45,6 +47,7 @@ export default class PaymentService {
   }
 
   async acceptPayment (inPayment: PaymentJSON): Promise <string> {
+    await this.engineMongo.connect()
     let meta
     if (inPayment.meta) {
       meta = inPayment.meta.slice(0)
@@ -54,8 +57,18 @@ export default class PaymentService {
         v: Number(inPayment.v),
         r: inPayment.r,
         s: inPayment.s
-      })}
-    let paymentResponse : AcceptPaymentResponse = await this.machinomy.acceptPayment({payment: payment})
+      }), value: new BigNumber(inPayment.value), price: new BigNumber(inPayment.price)}
+    console.log('VYNOS RSV:')
+    console.log('r: '+inPayment.r)
+    console.log('s: '+inPayment.s)
+      console.log('v: '+inPayment.v)
+
+    let msghash = ethutils.sha3("\x19Ethereum Signed Message:\n32"+ethutils.sha3("0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4"+inPayment.channelId.substring(2)+inPayment.value))
+    let addressHex = ethutils.pubToAddress(ethutils.ecrecover(msghash, inPayment.v, inPayment.r, inPayment.s))
+    console.log('Substring:'+inPayment.channelId.substring(2))
+    console.log(addressHex)
+    console.log('HEX ADDR = '+ ethutils.bufferToHex(addressHex))
+    let paymentResponse : AcceptPaymentResponse = await this.machinomy.acceptPayment(payment)
     if (meta) {
       await this.insert({meta, token: paymentResponse.token})
     }
@@ -63,6 +76,7 @@ export default class PaymentService {
   }
 
   async verify (meta: string, token: string, price: BigNumber): Promise<boolean> {
+    await this.engineMongo.connect()
     let res = await this.findOne({meta, token})
     if (res) {
       let payment = await this.machinomy.paymentById(token)

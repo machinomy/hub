@@ -21,7 +21,7 @@ engineMongo.connect().then(() => {
       let token = await paymentService.acceptPayment(req.body.payment)
       console.log('INHUB TOKEN = ')
       console.log(token)
-      res.status(202).header('Paywall-Token', token).send('Accepted').end()
+      res.status(202).header('Paywall-Token', token).send({token: token}).end()
     } catch(err) {
       console.error(err.message)
       res.status(403).send({ error: err.message })
