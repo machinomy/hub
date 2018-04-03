@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import PaymentService from '../services/PaymentService'
-import {EngineMongo} from 'machinomy/lib/engines/engine'
+import { default as PaymentService, COLLECTION } from '../services/PaymentService'
+import { EngineMongo } from 'machinomy/dist/lib/engines/engine'
 import BigNumber from 'bignumber.js'
 
 let paymentObj = {
@@ -16,7 +16,7 @@ let paymentObj = {
   meta: 'meta_string'
 }
 
-let engineMongo: EngineMongo = new EngineMongo()
+let engineMongo: EngineMongo = new EngineMongo(COLLECTION)
 
 describe('.PaymentService', () => {
   before((done) => {
@@ -28,14 +28,15 @@ describe('.PaymentService', () => {
   })
 
   beforeEach((done) => {
-    engineMongo.db().dropDatabase(() => {
+    engineMongo.drop().then(() => {
       done()
     })
   })
 
   after((done) => {
-    engineMongo.db().close()
-    done()
+    engineMongo.close().then(() => {
+      done()
+    })
   })
 
   describe('.verifyToken', () => {

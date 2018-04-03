@@ -1,7 +1,7 @@
 import express = require('express')
 import {Router} from "express-serve-static-core";
-import {EngineMongo} from 'machinomy/lib/engines/engine'
-import PaymentService from '../services/PaymentService'
+import {EngineMongo} from 'machinomy/dist/lib/engines/engine'
+import { default as PaymentService, COLLECTION } from '../services/PaymentService'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
 require('dotenv').config()
@@ -12,7 +12,7 @@ const ETHEREUM_API = process.env.ETHEREUM_API
 if (!ETHEREUM_API) throw new Error('Please, set ETHEREUM_API env variable')
 let paymentService = new PaymentService(RECEIVER, ETHEREUM_API)
 
-let engineMongo: EngineMongo = new EngineMongo()
+let engineMongo: EngineMongo = new EngineMongo(COLLECTION)
 
 engineMongo.connect().then(() => {
   router.post('/accept', async (req: express.Request, res: express.Response, next: Function) => {

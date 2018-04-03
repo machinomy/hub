@@ -2,19 +2,20 @@
 import express = require('express')
 import {Router} from "express-serve-static-core";
 import * as Web3 from 'web3'
-import Payment from "machinomy/lib/payment";
-import {PaymentJSON} from "machinomy/lib/payment";
-import {EngineMongo} from 'machinomy/lib/engines/engine'
+import Payment from "machinomy/dist/lib/payment";
+import {default as pify} from "machinomy/dist/lib/util/pify"
+import {PaymentJSON} from "machinomy/dist/lib/payment"
+import {EngineMongo} from 'machinomy/dist/lib/engines/engine'
 import Machinomy from 'machinomy'
 import BigNumber from 'bignumber.js'
-import {AcceptPaymentResponse} from 'machinomy/lib/client'
-import Signature from 'machinomy/lib/signature'
+import {AcceptPaymentResponse} from 'machinomy/dist/lib/client'
+import Signature from 'machinomy/dist/lib/signature'
 const  ethutils = require( 'ethereumjs-util')
 const router = express.Router()
 
 require('dotenv').config()
 
-const COLLECTION = 'hub'
+export const COLLECTION = 'hub'
 
 export interface MetaPayment {
   channelId: string
@@ -42,8 +43,8 @@ export default class PaymentService {
 
   constructor(receiver: string, ethereumAPI: string) {
     let web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
-    this.machinomy = new Machinomy(receiver, web3, { engine: 'mongo', databaseFile: 'hub' })
-    this.engineMongo = new EngineMongo()
+    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'mongo://' + COLLECTION})
+    this.engineMongo = new EngineMongo(COLLECTION)
   }
 
   async acceptPayment (inPayment: PaymentJSON): Promise <string> {
@@ -88,21 +89,25 @@ export default class PaymentService {
    }
 
   private findOne (query: any): Promise<HubToken> {
-    return new Promise((resolve, reject) => {
-      this.engineMongo.db().collection(COLLECTION).findOne(query, (err: Error, res: any) => {
-        if (err) {
-          reject(err)
+    return new Promise<HubToken>((resolve, reject) => {
+      return this.engineMongo.exec((client: any) => {
+        return pify((cb: Function) => client.collection(COLLECTION).findOne(query, cb))
+      }).then((doc: any) => {
+        if (!doc) {
+          reject('Empty document')
         }
-        resolve(res)
+        resolve({token: doc['token'], meta: doc['meta']} as HubToken)
       })
     })
   }
 
   private insert (document: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.engineMongo.db().collection(COLLECTION).insert(document, (err: any, res: any) => {
-        if (err) {
-          reject(err)
+    return new Promise<void>((resolve, reject) => {
+      return this.engineMongo.exec((client: any) => {
+        return pify((cb: Function) => client.collection(COLLECTION).insert(document, cb))
+      }).then((doc: any) => {
+        if (!doc) {
+          reject('Empty document')
         }
         resolve()
       })
