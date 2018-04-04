@@ -16,7 +16,7 @@ let paymentObj = {
   meta: 'meta_string'
 }
 
-let engineMongo: EngineMongo = new EngineMongo(COLLECTION)
+let engineMongo: EngineMongo = new EngineMongo('mongodb://localhost:27017/' + COLLECTION)
 
 describe('.PaymentService', () => {
   before((done) => {

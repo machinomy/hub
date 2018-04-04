@@ -43,8 +43,8 @@ export default class PaymentService {
 
   constructor(receiver: string, ethereumAPI: string) {
     let web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
-    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'mongo://' + COLLECTION})
-    this.engineMongo = new EngineMongo(COLLECTION)
+    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'mongodb://localhost:27017/' + COLLECTION})
+    this.engineMongo = new EngineMongo('mongodb://localhost:27017/' + COLLECTION)
   }
 
   async acceptPayment (inPayment: PaymentJSON): Promise <string> {
@@ -59,33 +59,35 @@ export default class PaymentService {
         r: inPayment.r,
         s: inPayment.s
       }), value: new BigNumber(inPayment.value), price: new BigNumber(inPayment.price)}
-    console.log('VYNOS RSV:')
-    console.log('r: '+inPayment.r)
-    console.log('s: '+inPayment.s)
-      console.log('v: '+inPayment.v)
+    // console.log('VYNOS RSV:')
+    // console.log('r: '+inPayment.r)
+    // console.log('s: '+inPayment.s)
+    //   console.log('v: '+inPayment.v)
 
-    let msghash = ethutils.sha3("\x19Ethereum Signed Message:\n32"+ethutils.sha3("0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4"+inPayment.channelId.substring(2)+inPayment.value))
-    let addressHex = ethutils.pubToAddress(ethutils.ecrecover(msghash, inPayment.v, inPayment.r, inPayment.s))
-    console.log('Substring:'+inPayment.channelId.substring(2))
-    console.log(addressHex)
-    console.log('HEX ADDR = '+ ethutils.bufferToHex(addressHex))
-    let paymentResponse : AcceptPaymentResponse = await this.machinomy.acceptPayment(payment)
+    // let msghash = ethutils.sha3("\x19Ethereum Signed Message:\n32"+ethutils.sha3("0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4"+inPayment.channelId.substring(2)+inPayment.value))
+    // let addressHex = ethutils.pubToAddress(ethutils.ecrecover(msghash, inPayment.v, inPayment.r, inPayment.s))
+    // console.log('Substring:'+inPayment.channelId.substring(2))
+    // console.log(addressHex)
+    // console.log('HEX ADDR = '+ ethutils.bufferToHex(addressHex))
+    let paymentResponse : AcceptPaymentResponse = await this.machinomy.acceptPayment({payment: payment})
     if (meta) {
       await this.insert({meta, token: paymentResponse.token})
     }
-    return paymentResponse.token
+    return new Promise<string>((resolve, reject) => {paymentResponse ? resolve(paymentResponse.token) : reject('')})
   }
 
   async verify (meta: string, token: string, price: BigNumber): Promise<boolean> {
-    await this.engineMongo.connect()
-    let res = await this.findOne({meta, token})
-    if (res) {
-      let payment = await this.machinomy.paymentById(token)
-      if (payment && payment.price.equals(price)) {
-        return true
+    if (token && token !== 'undefined') {
+      await this.engineMongo.connect()
+      let res = await this.findOne({meta, token})
+      if (res) {
+        let payment = await this.machinomy.paymentById(token)
+        if (payment && payment.price.equals(price)) {
+          return new Promise<boolean>(resolve => resolve(true))
+        }
       }
     }
-    return false
+    return new Promise<boolean>(resolve => resolve(false))
    }
 
   private findOne (query: any): Promise<HubToken> {

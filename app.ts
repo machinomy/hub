@@ -8,6 +8,8 @@ import * as bodyParser from 'body-parser';
 import * as cors  from 'cors'
 import { router as routes } from './routes/index';
 
+require('dotenv').config()
+
 export let app = express();
 
 // view engine setup
@@ -22,7 +24,7 @@ app.set('view engine', 'handlebars')
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cors({
-  origin: '*',
+  origin: process.env.CORS_ORIGIN,
   credentials: true,
   allowedHeaders: ['content-type', 'paywall-version', 'paywall-address', 'paywall-gateway', 'paywall-price', 'paywall-token', 'authorization'],
   exposedHeaders: ['paywall-version', 'paywall-address', 'paywall-gateway', 'paywall-price', 'paywall-token']
