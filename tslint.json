@@ -1,6 +1,9 @@
 {
-    "extends": "tslint-config-standard",
-    "rules": {
-        "semicolon": [true, "always"]    
-    }
+  "defaultSeverity": "error",
+  "extends": ["tslint-config-standard"],
+  "rules": {
+    "no-trailing-whitespace": [true, "ignore-jsdoc"],
+    "indent": [true, "spaces", 2],
+    "quotemark": [true, "single"]
+  }
 }
