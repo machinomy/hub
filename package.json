@@ -6,7 +6,8 @@
     "test": "yarn build && NODE_ENV=test mocha",
     "build": "tsc -p tsconfig.json",
     "deploy": "ansible-playbook -i deploy/hosts deploy/deploy.yml",
-    "doc": "swagger-codegen generate -i swagger.yaml -l public/swagger.json"
+    "doc": "swagger-codegen generate -i swagger.yaml -l public/swagger.json",
+    "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "types": "index.d.ts",
   "dependencies": {
