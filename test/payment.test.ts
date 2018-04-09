@@ -1,9 +1,10 @@
-import { expect } from 'chai'
-import PaymentService from '../services/PaymentService'
-import mongo from 'machinomy/lib/mongo'
 import BigNumber from 'bignumber.js'
+import { expect } from 'chai'
+import { default as PaymentService, COLLECTION } from '../services/PaymentService'
+import { EngineMongo } from 'machinomy/dist/lib/engines/engine'
+import { PaymentJSON } from 'machinomy/dist/lib/payment'
 
-let paymentObj = {
+let paymentObj: PaymentJSON = {
   channelId: 'string',
   sender: 'string',
   receiver: 'string',
@@ -13,12 +14,15 @@ let paymentObj = {
   v: 1,
   r: 'string',
   s: 'string',
-  meta: 'meta_string'
+  meta: 'meta_string',
+  token: undefined
 }
+
+let engineMongo: EngineMongo = new EngineMongo('mongodb://localhost:27017/' + COLLECTION)
 
 describe('.PaymentService', () => {
   before((done) => {
-    mongo.connectToServer().then(() => {
+    engineMongo.connect().then(() => {
       done()
     }).catch((e: Error) => {
       console.log(e)
@@ -26,20 +30,21 @@ describe('.PaymentService', () => {
   })
 
   beforeEach((done) => {
-    mongo.db().dropDatabase(() => {
+    engineMongo.drop().then(() => {
       done()
     })
   })
 
   after((done) => {
-    mongo.db().close()
-    done()
+    engineMongo.close().then(() => {
+      done()
+    })
   })
 
   describe('.verifyToken', () => {
-    var payment: any
-    var paymentService: PaymentService
-    var meta: string
+    let payment: PaymentJSON
+    let paymentService: PaymentService
+    let meta: string
 
     beforeEach(() => {
       payment = Object.assign({}, paymentObj)
@@ -54,7 +59,7 @@ describe('.PaymentService', () => {
     })
 
     it('returns false if token incorrect', async () => {
-      let token = await paymentService.acceptPayment(payment)
+      await paymentService.acceptPayment(payment)
       let verified = await paymentService.verify(meta, 'wrongtoken', payment.price)
       expect(verified).to.equal(false)
     })

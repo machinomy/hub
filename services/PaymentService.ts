@@ -1,84 +1,85 @@
-
-import express = require('express')
-import {Router} from "express-serve-static-core";
-import Web3 = require('web3')
-import Payment from 'machinomy/lib/Payment'
-import mongo from 'machinomy/lib/mongo'
+import * as Web3 from 'web3'
 import Machinomy from 'machinomy'
 import BigNumber from 'bignumber.js'
-const router = express.Router()
+import Signature from 'machinomy/dist/lib/signature'
+import { default as pify } from 'machinomy/dist/lib/util/pify'
+import { PaymentJSON } from 'machinomy/dist/lib/payment'
+import { EngineMongo } from 'machinomy/dist/lib/engines/engine'
+import { AcceptPaymentResponse } from 'machinomy/dist/lib/client'
+
 require('dotenv').config()
 
-const COLLECTION = 'hub'
-
-export interface MetaPayment {
-  channelId: string
-  sender: string
-  receiver: string
-  price: BigNumber
-  value: BigNumber
-  channelValue: BigNumber
-  v: number
-  r: string
-  s: string
-  contractAddress?: string
-  meta: string
-}
+export const COLLECTION = 'hub'
 
 export interface HubToken {
-  meta: string,
+  meta: string
   token: string
 }
 
 export default class PaymentService {
   machinomy: Machinomy
+  engineMongo: EngineMongo
 
-  constructor(receiver: string, ethereumAPI: string) {
-    let web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
-    this.machinomy = new Machinomy(receiver, web3, { engine: 'mongo', databaseFile: 'hub' })
+  constructor (receiver: string, ethereumAPI: string) {
+    let web3: Web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
+    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'mongodb://localhost:27017/' + COLLECTION })
+    this.engineMongo = new EngineMongo('mongodb://localhost:27017/' + COLLECTION)
   }
 
-  async acceptPayment (metaPayment: MetaPayment): Promise <string> {
-    let meta
-    if (metaPayment.meta) {
-      meta = metaPayment.meta.slice(0)
-      delete metaPayment.meta
+  async acceptPayment (inPayment: PaymentJSON): Promise <string> {
+    await this.engineMongo.connect()
+    let meta = ''
+    if (inPayment.meta) {
+      meta = inPayment.meta.slice(0)
+      delete inPayment.meta
     }
-    let payment = new Payment(metaPayment)
-    let token = await this.machinomy.acceptPayment(payment)
+    let payment = { ...inPayment, signature: Signature.fromParts({
+      v: Number(inPayment.v),
+      r: inPayment.r,
+      s: inPayment.s
+    }), value: new BigNumber(inPayment.value), price: new BigNumber(inPayment.price) }
+
+    let paymentResponse: AcceptPaymentResponse = await this.machinomy.acceptPayment({ payment: payment })
     if (meta) {
-      await this.insert({meta, token})
+      await this.insert({ meta, token: paymentResponse.token })
     }
-    return token
+    return new Promise<string>((resolve, reject) => { paymentResponse ? resolve(paymentResponse.token) : reject('') })
   }
 
   async verify (meta: string, token: string, price: BigNumber): Promise<boolean> {
-    let res = await this.findOne({meta, token})
-    if (res) {
-      let payment = await this.machinomy.paymentById(token)
-      if (payment && payment.price.equals(price)) {
-        return true
+    if (token && token !== 'undefined') {
+      await this.engineMongo.connect()
+      let res = await this.findOne({ meta, token })
+      if (res) {
+        let payment = await this.machinomy.paymentById(token)
+        if (payment && payment.price.equals(price)) {
+          return new Promise<boolean>(resolve => resolve(true))
+        }
       }
     }
-    return false
-   }
+    return new Promise<boolean>(resolve => resolve(false))
+  }
 
   private findOne (query: any): Promise<HubToken> {
-    return new Promise((resolve, reject) => {
-      mongo.db().collection(COLLECTION).findOne(query, (err: Error, res: any) => {
-        if (err) {
-          reject(err)
+    return new Promise<HubToken>((resolve, reject) => {
+      return this.engineMongo.exec((client: any) => {
+        return pify((cb: Function) => client.collection(COLLECTION).findOne(query, cb))
+      }).then((doc: any) => {
+        if (!doc) {
+          reject('Empty document')
         }
-        resolve(res)
+        resolve({ token: doc['token'], meta: doc['meta'] } as HubToken)
       })
     })
   }
 
   private insert (document: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      mongo.db().collection(COLLECTION).insert(document, (err: any, res: any) => {
-        if (err) {
-          reject(err)
+    return new Promise<void>((resolve, reject) => {
+      return this.engineMongo.exec((client: any) => {
+        return pify((cb: Function) => client.collection(COLLECTION).insert(document, cb))
+      }).then((doc: any) => {
+        if (!doc) {
+          reject('Empty document')
         }
         resolve()
       })
