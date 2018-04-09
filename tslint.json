@@ -4,6 +4,7 @@
   "rules": {
     "no-trailing-whitespace": [true, "ignore-jsdoc"],
     "indent": [true, "spaces", 2],
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "no-floating-promises": [false] // TODO Remove it
   }
 }
