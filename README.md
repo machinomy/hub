@@ -1,4 +1,4 @@
-# Machinomy hub
+# Machinomy hub [![Build Status](https://travis-ci.com/machinomy/hub.svg?token=K1HKiXykkAKA6zQXxNvq&branch=master)](https://travis-ci.com/machinomy/hub)
 Hub provide [Machinomy](https://github.com/machinomy/machinomy) compatible API for payment acceptance and verification.
 
 ## API
