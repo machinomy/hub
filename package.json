@@ -27,6 +27,7 @@
     "webpack": "^3.4.1"
   },
   "devDependencies": {
+    "@machinomy/types-safe-buffer": "^0.0.1",
     "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
     "@types/bignumber.js": "^4.0.3",
     "@types/body-parser": "^1.16.4",

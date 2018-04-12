@@ -12,6 +12,10 @@
     truffle-contract "^3.0.0"
     web3 "^0.20.1"
 
+"@machinomy/types-safe-buffer@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-safe-buffer/-/types-safe-buffer-0.0.1.tgz#bf80d94a2cc90b9d8438749aa3542dbf7a1f72b0"
+
 "@machinomy/types-truffle-contract@https://github.com/machinomy/types-truffle-contract":
   version "0.0.1"
   resolved "https://github.com/machinomy/types-truffle-contract#e0f27e6818695c9dee8e6e74184d55994e45b206"
@@ -123,12 +127,6 @@
 "@types/node@8.0.9":
   version "8.0.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.9.tgz#19f44c3b6cb8a70d261d366f73650e3e3891ab2d"
-
-"@types/request-promise-native@^1.0.11":
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/@types/request-promise-native/-/request-promise-native-1.0.14.tgz#20f2ba136e6f29c2ea745c60767738d434793d31"
-  dependencies:
-    "@types/request" "*"
 
 "@types/request@*", "@types/request@^2.0.13":
   version "2.47.0"
@@ -3366,7 +3364,6 @@ machinomy@^1.7.3:
     "@types/express" "^4.0.36"
     "@types/nedb" "^1.8.3"
     "@types/request" "^2.0.13"
-    "@types/request-promise-native" "^1.0.11"
     "@types/uuid" "^3.4.3"
     bignumber.js "^4.1.0"
     commander "^2.9.0"
@@ -3377,7 +3374,6 @@ machinomy@^1.7.3:
     nedb "^1.8.0"
     prompt "^1.0.0"
     request "^2.76.0"
-    request-promise-native "^1.0.5"
     types-bn "^0.0.1"
     types-ethereumjs-util "^0.0.6"
     types-rlp "^0.0.1"
@@ -4579,20 +4575,6 @@ repeat-string@^1.5.2, repeat-string@^1.6.1:
 replace-ext@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-0.0.1.tgz#29bbd92078a739f0bcce2b4ee41e837953522924"
-
-request-promise-core@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/request-promise-core/-/request-promise-core-1.1.1.tgz#3eee00b2c5aa83239cfb04c5700da36f81cd08b6"
-  dependencies:
-    lodash "^4.13.1"
-
-request-promise-native@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/request-promise-native/-/request-promise-native-1.0.5.tgz#5281770f68e0c9719e5163fd3fab482215f4fda5"
-  dependencies:
-    request-promise-core "1.1.1"
-    stealthy-require "^1.1.0"
-    tough-cookie ">=2.3.3"
 
 request@2.81.0:
   version "2.81.0"
