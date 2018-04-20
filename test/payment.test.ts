@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { expect } from 'chai'
-import { default as PaymentService, COLLECTION } from '../services/PaymentService'
+import { default as PaymentService } from '../services/PaymentService'
 import { EngineMongo } from 'machinomy/dist/lib/engines/engine'
 import { PaymentJSON } from 'machinomy/dist/lib/payment'
 
@@ -18,7 +18,7 @@ let paymentObj: PaymentJSON = {
   token: undefined
 }
 
-let engineMongo: EngineMongo = new EngineMongo('mongodb://localhost:27017/' + COLLECTION)
+let engineMongo: EngineMongo = new EngineMongo('mongodb://localhost:27017/hub')
 
 describe('.PaymentService', () => {
   before((done) => {
@@ -48,7 +48,7 @@ describe('.PaymentService', () => {
 
     beforeEach(() => {
       payment = Object.assign({}, paymentObj)
-      paymentService = new PaymentService('string', 'address')
+      paymentService = new PaymentService('string', 'address', engineMongo, 'hub')
       meta = payment.meta.slice(0)
     })
 
