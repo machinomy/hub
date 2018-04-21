@@ -75,6 +75,7 @@ export default class PaymentService {
       return this.engine.findOne!(query, this.collectionOrTableName).then((resp: any) => {
         if (!resp) {
           reject({})
+          return
         }
         resolve({ token: resp['token'], meta: resp['meta'] } as HubToken)
       })
@@ -86,6 +87,7 @@ export default class PaymentService {
       return this.engine.insert!(document, this.collectionOrTableName).then((doc: any) => {
         if (!doc) {
           reject('Empty document')
+          return
         }
         resolve()
       })
