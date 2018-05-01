@@ -1,7 +1,7 @@
 import express = require('express')
 // tslint:disable-next-line:no-unused-variable
 import { Router } from 'express-serve-static-core'
-import { default as Engine, EngineSQLite } from 'machinomy/dist/lib/engines/engine'
+import { default as Engine, EnginePostgres } from 'machinomy/dist/lib/engines/engine'
 import { default as PaymentService } from '../services/PaymentService'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
@@ -12,7 +12,10 @@ if (!RECEIVER) throw new Error('Please, set RECEIVER env variable')
 const ETHEREUM_API = process.env.ETHEREUM_API
 if (!ETHEREUM_API) throw new Error('Please, set ETHEREUM_API env variable')
 
-let dbEngine: Engine = new EngineSQLite('sqlite://hub.sqlite')
+// Uncomment below for SQLite
+// let dbEngine: Engine = new EngineSQLite('sqlite://hub.sqlite')
+let dbEngine: Engine = new EnginePostgres('postgresql://paymenthub:1@localhost/PaymentHub')
+
 let paymentService: PaymentService = new PaymentService(RECEIVER, ETHEREUM_API, dbEngine, 'hub')
 
 dbEngine.connect().then(() => {

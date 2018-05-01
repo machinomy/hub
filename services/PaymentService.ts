@@ -21,7 +21,9 @@ export default class PaymentService {
 
   constructor (receiver: string, ethereumAPI: string, dbEngine: Engine, collectionOrTableName: string) {
     let web3: Web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
-    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'sqlite://hub.sqlite' })
+    // Uncomment below for SQLite
+    // this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'sqlite://hub.sqlite' })
+    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: 'postgresql://paymenthub:1@localhost/PaymentHub' })
     this.engine = dbEngine
     this.collectionOrTableName = collectionOrTableName ? collectionOrTableName : 'paymentService'
     this.ensureDBExists()
@@ -29,7 +31,9 @@ export default class PaymentService {
 
   ensureDBExists (): Promise<any> {
     return this.engine.exec((client: any) => pify((cb: Function) => {
-      return client.run(`CREATE TABLE IF NOT EXISTS ${this.collectionOrTableName} (token TEXT, meta TEXT)`, cb)
+      // Uncomment below for SQLite
+      // return client.run(`CREATE TABLE IF NOT EXISTS ${this.collectionOrTableName} (token TEXT, meta TEXT)`, cb)
+      return client.query(`CREATE TABLE IF NOT EXISTS ${this.collectionOrTableName} (token TEXT, meta TEXT)`, cb)
     }))
   }
 
