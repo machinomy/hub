@@ -1,7 +1,7 @@
 import express = require('express')
 // tslint:disable-next-line:no-unused-variable
 import { Router } from 'express-serve-static-core'
-import { default as Engine, EnginePostgres } from 'machinomy/dist/lib/engines/engine'
+import { default as Engine, EngineMongo, EnginePostgres, EngineSQLite } from 'machinomy/dist/lib/engines/engine'
 import { default as PaymentService } from '../services/PaymentService'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
@@ -11,12 +11,36 @@ const RECEIVER = process.env.RECEIVER
 if (!RECEIVER) throw new Error('Please, set RECEIVER env variable')
 const ETHEREUM_API = process.env.ETHEREUM_API
 if (!ETHEREUM_API) throw new Error('Please, set ETHEREUM_API env variable')
+const DATABASE_URL = process.env.DATABASE_URL
+if (!DATABASE_URL) throw new Error('Please, set DATABASE_URL env variable')
+const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
+if (!TABLE_OR_COLLECTION_NAME) throw new Error('Please, set TABLE_OR_COLLECTION_NAME env variable')
 
-// Uncomment below for SQLite
-// let dbEngine: Engine = new EngineSQLite('sqlite://hub.sqlite')
-let dbEngine: Engine = new EnginePostgres('postgresql://paymenthub:1@localhost/PaymentHub')
+let dbEngine: Engine
 
-let paymentService: PaymentService = new PaymentService(RECEIVER, ETHEREUM_API, dbEngine, 'hub')
+// tslint:disable-next-line:no-unnecessary-type-assertion
+const splits = DATABASE_URL!.split('://')
+
+switch (splits[0]) {
+  case 'mongodb': {
+    // tslint:disable-next-line:no-unnecessary-type-assertion
+    dbEngine = new EngineMongo(DATABASE_URL!)
+    break
+  }
+  case 'postgresql': {
+    // tslint:disable-next-line:no-unnecessary-type-assertion
+    dbEngine = new EnginePostgres(DATABASE_URL!)
+    break
+  }
+  case 'sqlite': {
+    dbEngine = new EngineSQLite(splits[1])
+    break
+  }
+  default:
+    throw new Error(`Invalid engine: ${splits[0]}.`)
+}
+
+let paymentService: PaymentService = new PaymentService(RECEIVER, ETHEREUM_API, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
 
 dbEngine.connect().then(() => {
   router.post('/accept', async (req: express.Request, res: express.Response, next: Function) => {

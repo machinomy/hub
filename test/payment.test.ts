@@ -4,6 +4,13 @@ import { default as PaymentService } from '../services/PaymentService'
 import { EngineMongo } from 'machinomy/dist/lib/engines/engine'
 import { PaymentJSON } from 'machinomy/dist/lib/payment'
 
+require('dotenv').config()
+
+const DATABASE_URL = process.env.DATABASE_URL
+if (!DATABASE_URL) throw new Error('Please, set DATABASE_URL env variable')
+const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
+if (!TABLE_OR_COLLECTION_NAME) throw new Error('Please, set TABLE_OR_COLLECTION_NAME env variable')
+
 let paymentObj: PaymentJSON = {
   channelId: 'string',
   sender: 'string',
@@ -48,7 +55,7 @@ describe('.PaymentService', () => {
 
     beforeEach(() => {
       payment = Object.assign({}, paymentObj)
-      paymentService = new PaymentService('string', 'address', engineMongo, 'hub')
+      paymentService = new PaymentService('string', 'address', engineMongo, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
       meta = payment.meta.slice(0)
     })
 
