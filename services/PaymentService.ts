@@ -5,7 +5,7 @@ import Signature from 'machinomy/dist/lib/signature'
 import { default as pify } from 'machinomy/dist/lib/util/pify'
 import { PaymentJSON } from 'machinomy/dist/lib/payment'
 import { default as Engine, EnginePostgres, EngineSQLite } from 'machinomy/dist/lib/engines/engine'
-import { AcceptPaymentResponse } from 'machinomy/dist/lib/client'
+import { AcceptPaymentResponse } from 'machinomy/dist/lib/accept_payment_response'
 
 export interface HubToken {
   meta: string
