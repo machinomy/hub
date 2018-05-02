@@ -1,8 +1,8 @@
 import express = require('express')
 // tslint:disable-next-line:no-unused-variable
 import { Router } from 'express-serve-static-core'
-import { EngineMongo } from 'machinomy/dist/lib/engines/engine'
-import { default as PaymentService, COLLECTION } from '../services/PaymentService'
+import { default as Engine, EngineMongo, EnginePostgres, EngineSQLite } from 'machinomy/dist/lib/engines/engine'
+import { default as PaymentService } from '../services/PaymentService'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
 require('dotenv').config()
@@ -11,11 +11,38 @@ const RECEIVER = process.env.RECEIVER
 if (!RECEIVER) throw new Error('Please, set RECEIVER env variable')
 const ETHEREUM_API = process.env.ETHEREUM_API
 if (!ETHEREUM_API) throw new Error('Please, set ETHEREUM_API env variable')
-let paymentService: PaymentService = new PaymentService(RECEIVER, ETHEREUM_API)
+const DATABASE_URL = process.env.DATABASE_URL
+if (!DATABASE_URL) throw new Error('Please, set DATABASE_URL env variable')
+const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
+if (!TABLE_OR_COLLECTION_NAME) throw new Error('Please, set TABLE_OR_COLLECTION_NAME env variable')
 
-let engineMongo: EngineMongo = new EngineMongo('mongodb://localhost:27017/' + COLLECTION)
+let dbEngine: Engine
 
-engineMongo.connect().then(() => {
+// tslint:disable-next-line:no-unnecessary-type-assertion
+const splits = DATABASE_URL!.split('://')
+
+switch (splits[0]) {
+  case 'mongodb': {
+    // tslint:disable-next-line:no-unnecessary-type-assertion
+    dbEngine = new EngineMongo(DATABASE_URL!)
+    break
+  }
+  case 'postgresql': {
+    // tslint:disable-next-line:no-unnecessary-type-assertion
+    dbEngine = new EnginePostgres(DATABASE_URL!)
+    break
+  }
+  case 'sqlite': {
+    dbEngine = new EngineSQLite(splits[1])
+    break
+  }
+  default:
+    throw new Error(`Invalid engine: ${splits[0]}.`)
+}
+
+let paymentService: PaymentService = new PaymentService(RECEIVER, ETHEREUM_API, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
+
+dbEngine.connect().then(() => {
   router.post('/accept', async (req: express.Request, res: express.Response, next: Function) => {
     try {
       let token = await paymentService.acceptPayment(req.body.payment)
@@ -26,25 +53,33 @@ engineMongo.connect().then(() => {
     }
   })
 
+  router.head('/accept', (req: express.Request, res: express.Response, next: express.NextFunction): any => {
+    res.send()
+  })
+
   router.get('/verify', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    let meta: string = req.query.meta
-    let token: string = req.query.token
-    let price: BigNumber = new BigNumber(req.query.price)
-    try {
-      let isOk = await paymentService.verify(meta, token, price)
-      if (isOk) {
-        res.status(200).send({ status: 'ok' })
-      } else {
-        res.status(403).send({ error: 'token is invalid' })
+    if (req.query.meta === undefined) {
+      res.status(403).send({ error: 'meta is invalid' })
+    } else if (req.query.token === undefined) {
+      res.status(403).send({ error: 'token is invalid' })
+    } else if (req.query.price === undefined) {
+      res.status(403).send({ error: 'price is invalid' })
+    } else {
+      let meta: string = req.query.meta
+      let token: string = req.query.token
+      let price: BigNumber = new BigNumber(req.query.price)
+      try {
+        let isOk = await paymentService.verify(meta, token, price)
+        if (isOk) {
+          res.status(200).send({ status: 'ok' })
+        } else {
+          res.status(403).send({ error: 'token is invalid' })
+        }
+      } catch (err) {
+        res.status(403).send({ error: err })
       }
-    } catch (err) {
-      res.status(403).send({ error: err })
     }
   })
-})
-
-router.get('/isalive', (req: express.Request, res: express.Response, next: express.NextFunction): any => {
-  res.send('yes')
 })
 
 export { router }

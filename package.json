@@ -19,7 +19,7 @@
     "dotenv": "^4.0.0",
     "ethereumjs-util": "^5.1.5",
     "handlebars": "^4.0.11",
-    "machinomy": "^1.7.9",
+    "machinomy": "^1.7.12",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "web3": "^0.19.0"
@@ -36,7 +36,7 @@
     "@types/express": "^4.0.36",
     "@types/mocha": "^2.2.44",
     "@types/morgan": "^1.7.32",
-    "@types/node": "9.4.0",
+    "@types/node": "^10.0.0",
     "@types/serve-favicon": "^2.2.28",
     "chai": "^4.1.2",
     "debug": "~2.2.0",
