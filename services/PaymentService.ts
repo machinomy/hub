@@ -22,10 +22,10 @@ export default class PaymentService {
     this.machinomy = new Machinomy(receiver, web3, { databaseUrl: databaseUrl })
     this.engine = dbEngine
     this.tableOrCollectionName = tableOrCollectionName
-    this.ensureDBExists()
+    this.ensureTableExists()
   }
 
-  ensureDBExists (): Promise<any> {
+  ensureTableExists (): Promise<any> {
     return this.engine.exec((client: any) => pify((cb: Function) => {
       if (this.engine instanceof EnginePostgres) {
         return client.query(`CREATE TABLE IF NOT EXISTS ${this.tableOrCollectionName} (token TEXT, meta TEXT)`, cb)
