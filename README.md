@@ -30,17 +30,16 @@ Now hub is ready to accept the payments and verify them.
 Default .env file (example.env):
 
 ```
-RECEIVER=0xc8ebc512fd59a9e9b04233a2178e28aa3e42608d
-RECEIVER_PASSWORD=
-ETHEREUM_API=http://localhost:8545
+HUB_ADDRESS=0xc8ebc512fd59a9e9b04233a2178e28aa3e42608d
+ETH_RPC_URL=http://localhost:8545
 PORT=3030
 CORS_ORIGIN=http://localhost:9090
 DATABASE_URL=postgresql://paymenthub:1@localhost/PaymentHub
 TABLE_OR_COLLECTION_NAME=hub
 ```
-RECEIVER - 0x-prefixed Ethereum-address, hub address
+HUB_ADDRESS - 0x-prefixed Ethereum-address, hub address
 
-ETHEREUM_API - URL of Ethereum RPC (you can use local Ganache, 
+ETH_RPC_URL - URL of Ethereum RPC (you can use local Ganache, 
 but ensure you correctly deployed machinomy-contracts, see instructions below)
 
 PORT - listening port for hub

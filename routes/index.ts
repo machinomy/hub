@@ -7,10 +7,10 @@ import BigNumber from 'bignumber.js'
 const router = express.Router()
 require('dotenv').config()
 
-const RECEIVER = process.env.RECEIVER
-if (!RECEIVER) throw new Error('Please, set RECEIVER env variable')
-const ETHEREUM_API = process.env.ETHEREUM_API
-if (!ETHEREUM_API) throw new Error('Please, set ETHEREUM_API env variable')
+const HUB_ADDRESS = process.env.HUB_ADDRESS
+if (!HUB_ADDRESS) throw new Error('Please, set HUB_ADDRESS env variable')
+const ETH_RPC_URL = process.env.ETH_RPC_URL
+if (!ETH_RPC_URL) throw new Error('Please, set ETH_RPC_URL env variable')
 const DATABASE_URL = process.env.DATABASE_URL
 if (!DATABASE_URL) throw new Error('Please, set DATABASE_URL env variable')
 const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
@@ -40,7 +40,7 @@ switch (splits[0]) {
     throw new Error(`Invalid engine: ${splits[0]}.`)
 }
 
-let paymentService: PaymentService = new PaymentService(RECEIVER, ETHEREUM_API, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
+let paymentService: PaymentService = new PaymentService(HUB_ADDRESS, ETH_RPC_URL, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
 
 dbEngine.connect().then(() => {
   router.post('/accept', async (req: express.Request, res: express.Response, next: Function) => {
