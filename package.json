@@ -20,6 +20,7 @@
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "ethereumjs-util": "^5.1.5",
+    "figlet": "^1.2.0",
     "handlebars": "^4.0.11",
     "machinomy": "^1.7.12",
     "morgan": "~1.6.1",

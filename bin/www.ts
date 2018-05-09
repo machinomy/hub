@@ -4,6 +4,7 @@ import { app } from '../app'
 import * as debugModule from 'debug'
 let debug = debugModule('temp:server')
 import * as http from 'http'
+const figlet = require('figlet')
 
 require('dotenv').config()
 
@@ -14,6 +15,14 @@ let server = http.createServer(app)
 server.listen(port)
 server.on('error', onError)
 server.on('listening', onListening)
+figlet('Machinomy   Hub', (err: any, data: any) => {
+  if (err) {
+    console.log('figlet: Something went wrong...')
+    console.dir(err)
+    return
+  }
+  console.log(data)
+})
 
 function normalizePort (val: string): string | number | boolean {
   let port = parseInt(val, 10)
@@ -59,6 +68,6 @@ function onListening () {
   let addr = server.address()
   let bind = (typeof addr) === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.port
+    : 'port ' + (addr as { port: number; family: string; address: string; }).port
   debug('Listening on ' + bind)
 }
