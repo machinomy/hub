@@ -54,7 +54,7 @@ dbEngine.connect().then(() => {
   })
 
   router.head('/accept', (req: express.Request, res: express.Response, next: express.NextFunction): any => {
-    res.send()
+    res.header('Access-Control-Allow-Origin', req.get('origin')).send()
   })
 
   router.get('/verify', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
