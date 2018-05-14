@@ -25,7 +25,9 @@ app.set('view engine', 'handlebars')
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
+  origin: function (origin, callback) {
+    callback(null, true)
+  },
   credentials: true,
   allowedHeaders: ['content-type', 'paywall-version', 'paywall-address', 'paywall-gateway', 'paywall-price', 'paywall-token', 'authorization'],
   exposedHeaders: ['paywall-version', 'paywall-address', 'paywall-gateway', 'paywall-price', 'paywall-token']
