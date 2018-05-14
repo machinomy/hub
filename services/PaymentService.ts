@@ -71,11 +71,11 @@ export default class PaymentService {
   private findOne (jsonQuery: any): Promise<HubToken> {
     return new Promise<HubToken>((resolve, reject) => {
       return this.engine.exec((client: any) => client.query(
-        `SELECT token, meta FROM ${this.tableOrCollectionName} WHERE token = $1 AND meta = $2 LIMIT 1`
-          [
-            jsonQuery.token,
-            jsonQuery.meta
-          ]
+        `SELECT token, meta FROM ${this.tableOrCollectionName} WHERE token = $1 AND meta = $2 LIMIT 1`,
+        [
+          jsonQuery.token,
+          jsonQuery.meta
+        ]
       )).then((resp: any) => {
         if (!resp) {
           reject({})
@@ -92,7 +92,7 @@ export default class PaymentService {
         `INSERT INTO ${this.tableOrCollectionName}(token, meta) VALUES($1, $2)`,
         [
           document.token,
-          document.meta,
+          document.meta
         ]
       )).then((doc: any) => {
         if (!doc) {
