@@ -22,7 +22,7 @@
     "ethereumjs-util": "^5.1.5",
     "figlet": "^1.2.0",
     "handlebars": "^4.0.11",
-    "machinomy": "^1.7.12",
+    "machinomy": "^1.8.1",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "web3": "^0.19.0"

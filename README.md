@@ -46,8 +46,7 @@ PORT - listening port for hub
 
 CORS_ORIGIN - Hub able to receive requests from this URL only. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for more info. 
 
-DATABASE_URL - connection URL for the database. postgresql:// or sqlite:// or mongodb:// 
-prefix **is mandatory**. 
+DATABASE_URL - connection URL for the database. postgresql:// prefix **is mandatory**. 
 
 
 ## Working with local Ethereum RPC (via Ganache)
@@ -92,4 +91,4 @@ Node.js 10
 
 yarnpkg 1.6
 
-Optional: PostgreSQL 10 or MongoDB 2
+PostgreSQL 10
