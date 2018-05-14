@@ -17,7 +17,7 @@ const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
 if (!TABLE_OR_COLLECTION_NAME) throw new Error('Please, set TABLE_OR_COLLECTION_NAME env variable')
 
 let dbEngine: EnginePostgres
-
+// tslint:disable-next-line:no-unnecessary-type-assertion
 dbEngine = new EnginePostgres(DATABASE_URL!)
 
 let paymentService: PaymentService = new PaymentService(HUB_ADDRESS, ETH_RPC_URL, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
