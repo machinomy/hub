@@ -173,3 +173,8 @@ typings/
 
 
 # End of https://www.gitignore.io/api/node,jetbrains
+
+dist/
+.idea/
+.env
+*.sqlite
