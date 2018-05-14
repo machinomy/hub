@@ -1,7 +1,7 @@
 import express = require('express')
 // tslint:disable-next-line:no-unused-variable
 import { Router } from 'express-serve-static-core'
-import { default as Engine, EngineMongo, EnginePostgres, EngineSQLite } from 'machinomy/dist/lib/engines/engine'
+import EnginePostgres from 'machinomy/dist/lib/storage/postgresql/EnginePostgres'
 import { default as PaymentService } from '../services/PaymentService'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
@@ -16,29 +16,9 @@ if (!DATABASE_URL) throw new Error('Please, set DATABASE_URL env variable')
 const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
 if (!TABLE_OR_COLLECTION_NAME) throw new Error('Please, set TABLE_OR_COLLECTION_NAME env variable')
 
-let dbEngine: Engine
-
+let dbEngine: EnginePostgres
 // tslint:disable-next-line:no-unnecessary-type-assertion
-const splits = DATABASE_URL!.split('://')
-
-switch (splits[0]) {
-  case 'mongodb': {
-    // tslint:disable-next-line:no-unnecessary-type-assertion
-    dbEngine = new EngineMongo(DATABASE_URL!)
-    break
-  }
-  case 'postgresql': {
-    // tslint:disable-next-line:no-unnecessary-type-assertion
-    dbEngine = new EnginePostgres(DATABASE_URL!)
-    break
-  }
-  case 'sqlite': {
-    dbEngine = new EngineSQLite(splits[1])
-    break
-  }
-  default:
-    throw new Error(`Invalid engine: ${splits[0]}.`)
-}
+dbEngine = new EnginePostgres(DATABASE_URL!)
 
 let paymentService: PaymentService = new PaymentService(HUB_ADDRESS, ETH_RPC_URL, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
 

@@ -1,10 +1,10 @@
 import * as Web3 from 'web3'
 import Machinomy from 'machinomy'
 import BigNumber from 'bignumber.js'
-import Signature from 'machinomy/dist/lib/signature'
+import Signature from 'machinomy/dist/lib/Signature'
 import { default as pify } from 'machinomy/dist/lib/util/pify'
 import { PaymentJSON } from 'machinomy/dist/lib/payment'
-import { default as Engine, EnginePostgres, EngineSQLite } from 'machinomy/dist/lib/engines/engine'
+import PostgresEngine from 'machinomy/dist/lib/storage/postgresql/EnginePostgres'
 import { AcceptPaymentResponse } from 'machinomy/dist/lib/accept_payment_response'
 
 export interface HubToken {
@@ -14,10 +14,10 @@ export interface HubToken {
 
 export default class PaymentService {
   machinomy: Machinomy
-  engine: Engine
+  engine: PostgresEngine
   tableOrCollectionName: string
 
-  constructor (receiver: string, ethereumAPI: string, dbEngine: Engine, databaseUrl: string, tableOrCollectionName: string) {
+  constructor (receiver: string, ethereumAPI: string, dbEngine: PostgresEngine, databaseUrl: string, tableOrCollectionName: string) {
     let web3: Web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
     this.machinomy = new Machinomy(receiver, web3, { databaseUrl: databaseUrl })
     this.engine = dbEngine
@@ -27,11 +27,7 @@ export default class PaymentService {
 
   ensureTableExists (): Promise<any> {
     return this.engine.exec((client: any) => pify((cb: Function) => {
-      if (this.engine instanceof EnginePostgres) {
-        return client.query(`CREATE TABLE IF NOT EXISTS ${this.tableOrCollectionName} (token TEXT, meta TEXT)`, cb)
-      } else if (this.engine instanceof EngineSQLite) {
-        return client.run(`CREATE TABLE IF NOT EXISTS ${this.tableOrCollectionName} (token TEXT, meta TEXT)`, cb)
-      }
+      return client.query(`CREATE TABLE IF NOT EXISTS ${this.tableOrCollectionName} (token TEXT, meta TEXT)`, cb)
     }))
   }
 
@@ -72,9 +68,15 @@ export default class PaymentService {
     })
   }
 
-  private findOne (query: any): Promise<HubToken> {
+  private findOne (jsonQuery: any): Promise<HubToken> {
     return new Promise<HubToken>((resolve, reject) => {
-      return this.engine.findOne!(query, this.tableOrCollectionName).then((resp: any) => {
+      return this.engine.exec((client: any) => client.query(
+        `SELECT token, meta FROM ${this.tableOrCollectionName} WHERE token = $1 AND meta = $2 LIMIT 1`,
+        [
+          jsonQuery.token,
+          jsonQuery.meta
+        ]
+      )).then((resp: any) => {
         if (!resp) {
           reject({})
           return
@@ -86,7 +88,13 @@ export default class PaymentService {
 
   private insert (document: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      return this.engine.insert!(document, this.tableOrCollectionName).then((doc: any) => {
+      return this.engine.exec((client: any) => client.query(
+        `INSERT INTO ${this.tableOrCollectionName}(token, meta) VALUES($1, $2)`,
+        [
+          document.token,
+          document.meta
+        ]
+      )).then((doc: any) => {
         if (!doc) {
           reject('Empty document')
           return
