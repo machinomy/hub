@@ -33,7 +33,6 @@ Default .env file (example.env):
 HUB_ADDRESS=0xc8ebc512fd59a9e9b04233a2178e28aa3e42608d
 ETH_RPC_URL=http://localhost:8545
 PORT=3030
-CORS_ORIGIN=http://localhost:9090
 DATABASE_URL=postgresql://paymenthub:1@localhost/PaymentHub
 TABLE_OR_COLLECTION_NAME=hub
 ```
@@ -43,8 +42,6 @@ ETH_RPC_URL - URL of Ethereum RPC (you can use local Ganache,
 but ensure you correctly deployed machinomy-contracts, see instructions below)
 
 PORT - listening port for hub
-
-CORS_ORIGIN - Hub able to receive requests from this URL only. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for more info. 
 
 DATABASE_URL - connection URL for the database. postgresql:// prefix **is mandatory**. 
 
