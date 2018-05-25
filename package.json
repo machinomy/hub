@@ -9,7 +9,8 @@
     "doc": "swagger-codegen generate -i swagger.yaml -l public/swagger.json",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'",
     "start": "yarn build && node bin/www",
-    "inspect": "node --inspect bin/www"
+    "inspect": "node --inspect bin/www",
+    "migrate": "db-migrate up"
   },
   "types": "index.d.ts",
   "dependencies": {
@@ -24,7 +25,7 @@
     "ethereumjs-util": "^5.1.5",
     "figlet": "^1.2.0",
     "handlebars": "^4.0.11",
-    "machinomy": "^1.9.0",
+    "machinomy": "^1.9.1",
     "morgan": "~1.6.1",
     "pg": "^7.4.3",
     "serve-favicon": "~2.3.0",
