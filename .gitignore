@@ -30,7 +30,6 @@ benchmarks/graphs
 
 config/development.json
 **/*.d.ts
-**/*.js
 **/*.js.map
 
 .env
@@ -178,3 +177,7 @@ dist/
 .idea/
 .env
 *.sqlite
+app.js
+bin/www.js
+routes/index.js
+services/PaymentService.js
