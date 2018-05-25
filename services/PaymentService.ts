@@ -43,8 +43,8 @@ export default class PaymentService {
         r: inPayment.r,
         s: inPayment.s
       }), value: new BigNumber(inPayment.value), price: new BigNumber(inPayment.price) }
-
       let paymentResponse: AcceptPaymentResponse = await this.machinomy.acceptPayment({ payment: payment })
+
       if (meta) {
         await this.insert({ meta: meta, token: paymentResponse.token })
       }
