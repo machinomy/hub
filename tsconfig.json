@@ -50,10 +50,10 @@
     "include": [
       "node_modules/*/index.d.ts",
       "node_modules/@machinomy/*/index.d.ts",
-      "routes",
+      "src/routes",
       "test",
-      "bin",
-      "app.ts"
+      "src/bin",
+      "src/app.ts"
     ],
     "exclude": [
       "node_modules/homedir/index.d.ts",
