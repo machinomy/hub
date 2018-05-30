@@ -1,7 +1,7 @@
 import * as Koa from 'koa'
 import * as http from 'http'
 import Logger from './support/Logger'
-import PaymentsController from './routes/PaymentsController'
+import PaymentsController from './controllers/PaymentsController'
 import * as bodyParser from 'koa-bodyparser'
 
 const log = new Logger('hub:endpoint')

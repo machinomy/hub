@@ -1,7 +1,7 @@
 import Configuration from './Configuration'
 import { memoize } from 'decko'
 import Endpoint from './Endpoint'
-import PaymentsController from './routes/PaymentsController'
+import PaymentsController from './controllers/PaymentsController'
 import Machinomy from 'machinomy'
 import * as Web3 from 'web3'
 
