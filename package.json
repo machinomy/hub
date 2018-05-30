@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "yarn build && NODE_ENV=test jest",
+    "test": "yarn build && NODE_ENV=test jest ./src",
     "build": "tsc -p tsconfig.json",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'",
     "start": "yarn build && node dist/bin/hub",
