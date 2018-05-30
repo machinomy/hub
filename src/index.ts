@@ -1,7 +1,7 @@
 import Hub from './Hub'
-import Parameters from './Parameters'
+import Configuration from './Configuration'
 
 export {
   Hub,
-  Parameters
+  Configuration
 }

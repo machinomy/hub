@@ -13,9 +13,7 @@
     "outDir": "dist/"
   },
   "include": [
-    "src/index.ts",
-    "test",
-    "node_modules/*/index.d.ts",
-    "node_modules/@machinomy/*/index.d.ts"
+    "./src/**/*",
+    "node_modules/@machinomy/types-web3/index.d.ts"
   ]
 }
