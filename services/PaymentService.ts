@@ -1,11 +1,11 @@
 import * as Web3 from 'web3'
 import Machinomy from 'machinomy'
 import BigNumber from 'bignumber.js'
-import Signature from 'machinomy/dist/lib/Signature'
-import { default as pify } from 'machinomy/dist/lib/util/pify'
-import { PaymentJSON } from 'machinomy/dist/lib/payment'
-import PostgresEngine from 'machinomy/dist/lib/storage/postgresql/EnginePostgres'
-import { AcceptPaymentResponse } from 'machinomy/dist/lib/accept_payment_response'
+import Signature from 'machinomy/lib/Signature'
+import { default as pify } from 'machinomy/lib/util/pify'
+import { PaymentJSON } from 'machinomy/lib/payment'
+import PostgresEngine from 'machinomy/lib/storage/postgresql/EnginePostgres'
+import { AcceptPaymentResponse } from 'machinomy/lib/accept_payment_response'
 
 export interface HubToken {
   meta: string

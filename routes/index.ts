@@ -1,7 +1,7 @@
 import express = require('express')
 // tslint:disable-next-line:no-unused-variable
 import { Router } from 'express-serve-static-core'
-import EnginePostgres from 'machinomy/dist/lib/storage/postgresql/EnginePostgres'
+import EnginePostgres from 'machinomy/lib/storage/postgresql/EnginePostgres'
 import { default as PaymentService } from '../services/PaymentService'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
