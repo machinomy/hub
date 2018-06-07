@@ -13,13 +13,23 @@ export interface HubToken {
 }
 
 export default class PaymentService {
-  machinomy: Machinomy
+  machinomy: Promise<Machinomy>
   engine: PostgresEngine
   tableOrCollectionName: string
 
-  constructor (receiver: string, ethereumAPI: string, dbEngine: PostgresEngine, databaseUrl: string, tableOrCollectionName: string) {
-    let web3: Web3 = new Web3(new Web3.providers.HttpProvider(ethereumAPI))
-    this.machinomy = new Machinomy(receiver, web3, { databaseUrl: databaseUrl })
+  constructor (provider: Web3.Provider, ethereumAPI: string, dbEngine: PostgresEngine, databaseUrl: string, tableOrCollectionName: string) {
+    let web3 = new Web3(provider)
+    this.machinomy = new Promise<Machinomy>((resolve, reject) => {
+      web3.eth.getAccounts((error, accounts) => {
+        if (error) {
+          reject(error)
+        } else {
+          let receiver = accounts[0]
+          let machinomy = new Machinomy(receiver, web3, { databaseUrl: databaseUrl })
+          resolve(machinomy)
+        }
+      })
+    })
     this.engine = dbEngine
     this.tableOrCollectionName = tableOrCollectionName
     this.ensureTableExists()
@@ -43,7 +53,8 @@ export default class PaymentService {
         r: inPayment.r,
         s: inPayment.s
       }), value: new BigNumber(inPayment.value), price: new BigNumber(inPayment.price) }
-      let paymentResponse: AcceptPaymentResponse = await this.machinomy.acceptPayment({ payment: payment })
+      let machinomy = await this.machinomy
+      let paymentResponse: AcceptPaymentResponse = await machinomy.acceptPayment({ payment: payment })
 
       if (meta) {
         await this.insert({ meta: meta, token: paymentResponse.token })
@@ -58,7 +69,8 @@ export default class PaymentService {
       if (token && token !== 'undefined') {
         let res = await this.findOne({ meta: meta, token: token })
         if (res) {
-          let payment = await this.machinomy.paymentById(token)
+          let machinomy = await this.machinomy
+          let payment = await machinomy.paymentById(token)
           if (payment && payment.price.equals(price)) {
             return Promise.resolve(true)
           }

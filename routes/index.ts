@@ -3,6 +3,7 @@ import express = require('express')
 import { Router } from 'express-serve-static-core'
 import EnginePostgres from 'machinomy/lib/storage/postgresql/EnginePostgres'
 import { default as PaymentService } from '../services/PaymentService'
+import HDWalletProvider from '@machinomy/hdwallet-provider'
 import BigNumber from 'bignumber.js'
 const router = express.Router()
 require('dotenv').config()
@@ -16,11 +17,13 @@ if (!DATABASE_URL) throw new Error('Please, set DATABASE_URL env variable')
 const TABLE_OR_COLLECTION_NAME = process.env.TABLE_OR_COLLECTION_NAME
 if (!TABLE_OR_COLLECTION_NAME) throw new Error('Please, set TABLE_OR_COLLECTION_NAME env variable')
 
-let dbEngine: EnginePostgres
 // tslint:disable-next-line:no-unnecessary-type-assertion
-dbEngine = new EnginePostgres(DATABASE_URL!)
+let dbEngine = new EnginePostgres(DATABASE_URL!)
 
-let paymentService: PaymentService = new PaymentService(HUB_ADDRESS, ETH_RPC_URL, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
+const MNEMONIC = process.env.MNEMONIC as string
+const provider = new HDWalletProvider(MNEMONIC, ETH_RPC_URL)
+
+let paymentService: PaymentService = new PaymentService(provider, ETH_RPC_URL, dbEngine, DATABASE_URL, TABLE_OR_COLLECTION_NAME)
 
 dbEngine.connect().then(() => {
   router.post('/accept', async (req: express.Request, res: express.Response, next: Function) => {
