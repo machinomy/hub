@@ -1,6 +1,7 @@
 import * as React from 'react'
+import { hot } from 'react-hot-loader'
 
-export default class Dashboard extends React.Component {
+export class Dashboard extends React.Component {
   render () {
     return <div id="app">
       Dashboard
@@ -10,3 +11,5 @@ export default class Dashboard extends React.Component {
     </div>
   }
 }
+
+export default hot(module)(Dashboard)

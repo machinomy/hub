@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import State from './state/State'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
-import Dashboard from "./components/Dashboard";
+import Dashboard from './components/Dashboard'
 
 let application = <Provider store={State.store}>
   <BrowserRouter>
