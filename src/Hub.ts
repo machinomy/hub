@@ -17,7 +17,7 @@ export default class Hub {
   }
 
   async start (): Promise<void> {
-    let endpoint = await this.registry.endpoint()
+    let endpoint = await this.registry.httpEndpoint()
     let running = endpoint.listen()
     log.info('start hub')
     return running

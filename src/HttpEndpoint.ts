@@ -4,9 +4,9 @@ import Logger from './support/Logger'
 import * as bodyParser from 'koa-bodyparser'
 import Routes from './Routes'
 
-const log = new Logger('hub:endpoint')
+const log = new Logger('hub:http-endpoint')
 
-export default class Endpoint {
+export default class HttpEndpoint {
   app: Koa
   private readonly port: number
   private server?: http.Server
@@ -43,7 +43,7 @@ export default class Endpoint {
           }
         })
       } else {
-        reject(new Error('Endpoint is not running'))
+        reject(new Error('HttpEndpoint is not running'))
       }
     })
   }

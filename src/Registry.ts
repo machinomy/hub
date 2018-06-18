@@ -1,6 +1,6 @@
 import Configuration from './Configuration'
 import { memoize } from 'decko'
-import Endpoint from './Endpoint'
+import HttpEndpoint from './HttpEndpoint'
 import PaymentsController from './controllers/PaymentsController'
 import Machinomy from 'machinomy'
 import * as Web3 from 'web3'
@@ -52,8 +52,8 @@ export default class Registry {
   }
 
   @memoize
-  async endpoint (): Promise<Endpoint> {
+  async httpEndpoint (): Promise<HttpEndpoint> {
     let routes = await this.routes()
-    return new Endpoint(this.configuration.port, routes)
+    return new HttpEndpoint(this.configuration.port, routes)
   }
 }
