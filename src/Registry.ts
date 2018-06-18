@@ -6,6 +6,7 @@ import Machinomy from 'machinomy'
 import * as Web3 from 'web3'
 import Routes from "./Routes";
 import DashboardController from "./controllers/DashboardController";
+import AssetsController from "./controllers/AssetsController";
 
 export default class Registry {
   configuration: Configuration
@@ -45,10 +46,16 @@ export default class Registry {
   }
 
   @memoize
+  async assetsController (): Promise<AssetsController> {
+    return new AssetsController()
+  }
+
+  @memoize
   async routes (): Promise<Routes> {
     let payments = await this.paymentsController()
     let dashboard = await this.dashboardController()
-    return new Routes(dashboard, payments)
+    let assets = await this.assetsController()
+    return new Routes(dashboard, payments, assets)
   }
 
   @memoize

@@ -3,16 +3,16 @@ import { Middleware } from 'koa'
 import * as send from 'koa-send'
 import * as path from "path";
 
-export default class DashboardController {
+export default class AssetsController {
   readonly middleware: Middleware
 
   constructor () {
     let router = new Router()
-    router.get('/', this.welcome.bind(this))
+    router.get('*', this.serve.bind(this))
     this.middleware = router.routes()
   }
 
-  async welcome (ctx: Router.IRouterContext) {
-    await send(ctx, 'index.html', { root: path.resolve(__dirname, '..', 'public') })
+  async serve (ctx: Router.IRouterContext) {
+    await send(ctx, ctx.path, { root: path.resolve(__dirname, '..', 'public') })
   }
 }
