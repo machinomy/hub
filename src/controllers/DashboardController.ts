@@ -7,11 +7,11 @@ export default class DashboardController {
 
   constructor () {
     let router = new Router()
-    router.head('/', this.heartbeat.bind(this))
+    router.get('/', this.welcome.bind(this))
     this.middleware = router.routes()
   }
 
-  async heartbeat (ctx: IEndpointContext) {
-    ctx.response.body = 'ROOT'
+  async welcome (ctx: IEndpointContext) {
+    ctx.response.body = 'Welcome to Hub Dashboard'
   }
 }
