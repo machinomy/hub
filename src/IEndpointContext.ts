@@ -2,7 +2,7 @@ import * as Koa from 'koa'
 import * as Router from 'koa-router'
 
 export interface IBodyRequest extends Koa.Request {
-  body?: object
+  body: object
 }
 
 /**
