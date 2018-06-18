@@ -1,8 +1,8 @@
 import * as Koa from 'koa'
 import * as http from 'http'
 import Logger from './support/Logger'
-import PaymentsController from './controllers/PaymentsController'
 import * as bodyParser from 'koa-bodyparser'
+import Routes from './Routes'
 
 const log = new Logger('hub:endpoint')
 
@@ -11,10 +11,10 @@ export default class Endpoint {
   private readonly port: number
   private server?: http.Server
 
-  constructor (port: number, paymentsController: PaymentsController) {
+  constructor (port: number, routes: Routes) {
     this.app = new Koa()
     this.app.use(bodyParser())
-    this.app.use(paymentsController.routes)
+    this.app.use(routes.middleware)
     this.port = port
   }
 

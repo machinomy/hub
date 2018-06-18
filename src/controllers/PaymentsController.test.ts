@@ -8,7 +8,7 @@ const app = new Koa()
 const machinomy = new Machinomy('0xdead', new Web3(), { databaseUrl: 'sqlite3://test' })
 
 const paymentsController = new PaymentsController(machinomy)
-app.use(paymentsController.routes)
+app.use(paymentsController.middleware)
 
 test('HEAD /accept', async () => {
   const response = await request(app.callback()).head('/accept')

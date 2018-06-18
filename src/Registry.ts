@@ -4,6 +4,8 @@ import Endpoint from './Endpoint'
 import PaymentsController from './controllers/PaymentsController'
 import Machinomy from 'machinomy'
 import * as Web3 from 'web3'
+import Routes from "./Routes";
+import DashboardController from "./controllers/DashboardController";
 
 export default class Registry {
   configuration: Configuration
@@ -32,14 +34,26 @@ export default class Registry {
   }
 
   @memoize
-  async paymentsRouter (): Promise<PaymentsController> {
+  async paymentsController (): Promise<PaymentsController> {
     let machinomy = await this.machinomy()
     return new PaymentsController(machinomy)
   }
 
   @memoize
+  async dashboardController (): Promise<DashboardController> {
+    return new DashboardController()
+  }
+
+  @memoize
+  async routes (): Promise<Routes> {
+    let payments = await this.paymentsController()
+    let dashboard = await this.dashboardController()
+    return new Routes(dashboard, payments)
+  }
+
+  @memoize
   async endpoint (): Promise<Endpoint> {
-    let paymentsRouter = await this.paymentsRouter()
-    return new Endpoint(this.configuration.port, paymentsRouter)
+    let routes = await this.routes()
+    return new Endpoint(this.configuration.port, routes)
   }
 }

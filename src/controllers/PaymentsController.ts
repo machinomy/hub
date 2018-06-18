@@ -7,7 +7,7 @@ import { Middleware } from 'koa'
 const log = new Logger('hub:payments-router')
 
 export default class PaymentsController {
-  routes: Middleware
+  middleware: Middleware
   machinomy: Machinomy
 
   constructor (machinomy: Machinomy) {
@@ -18,7 +18,7 @@ export default class PaymentsController {
     router.post('/accept', this.accept.bind(this))
     router.get('/verify/:token', this.verify.bind(this))
 
-    this.routes = router.routes()
+    this.middleware = router.routes()
   }
 
   async heartbeat (ctx: IEndpointContext) {

@@ -35,7 +35,6 @@
     "db-migrate-pg": "^0.3.0",
     "decko": "^1.2.0",
     "dotenv": "^4.0.0",
-    "ethereumjs-util": "^5.1.5",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
     "figlet": "^1.2.0",
@@ -51,7 +50,7 @@
   },
   "devDependencies": {
     "@machinomy/types-safe-buffer": "^0.0.1",
-    "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
+    "@machinomy/types-truffle-contract": "^0.0.3",
     "@machinomy/types-web3": "^0.0.7",
     "@types/bignumber.js": "^4.0.3",
     "@types/body-parser": "^1.16.4",
