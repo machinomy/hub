@@ -1,6 +1,5 @@
 import * as Router from 'koa-router'
 import Machinomy from 'machinomy'
-import IEndpointContext from '../IEndpointContext'
 import Logger from '../support/Logger'
 import { Middleware } from 'koa'
 
@@ -21,12 +20,12 @@ export default class PaymentsController {
     this.middleware = router.routes()
   }
 
-  async heartbeat (ctx: IEndpointContext) {
+  async heartbeat (ctx: Router.IRouterContext) {
     ctx.response.set('Access-Control-Allow-Origin', ctx.request.origin)
     ctx.response.body = null
   }
 
-  async accept (ctx: IEndpointContext) {
+  async accept (ctx: Router.IRouterContext) {
     let body = ctx.request.body
     log.debug('body: %o', body)
     let { token } = await this.machinomy.acceptPayment(body)
@@ -36,7 +35,7 @@ export default class PaymentsController {
     log.debug('respond with token %s', token)
   }
 
-  async verify (ctx: IEndpointContext) {
+  async verify (ctx: Router.IRouterContext) {
     log.debug('params: %o', ctx.params)
     const token = String(ctx.params.token)
     const acceptToken = await this.machinomy.acceptToken({ token })
