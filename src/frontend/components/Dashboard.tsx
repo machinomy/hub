@@ -9,12 +9,10 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-  findEthereumProvider: ActionCreator<Promise<void>>
 }
 
 export class Dashboard extends React.Component<StateProps & DispatchProps> {
   async componentDidMount () {
-    await this.props.findEthereumProvider()
   }
 
   render () {
@@ -35,7 +33,7 @@ function mapStateToProps (state: State): StateProps {
 
 function mapDispatchToProps (dispatch: Dispatch<any>) {
   return {
-    findEthereumProvider: () => dispatch(Ethereum.findProvider({}))
+    // queryEthereum: () => dispatch(Ethereum.findProvider({}))
   }
 }
 
