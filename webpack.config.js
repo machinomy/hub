@@ -29,7 +29,7 @@ const env = new webpack.EnvironmentPlugin({ NODE_ENV: 'development' })
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   context: path.resolve(__dirname, 'src', 'frontend'),
-  entry: './dashboard.tsx',
+  entry: './dashboard.ts',
   output: {
     path: path.resolve(__dirname, 'dist', 'public'),
     filename: 'bundle.js',
@@ -40,13 +40,6 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              babelrc: false,
-              plugins: ['react-hot-loader/babel'],
-            },
-          },
           'ts-loader', // (or awesome-typescript-loader)
         ],
         exclude: /node_modules/
