@@ -5,8 +5,9 @@ import { Switch, Route, Redirect, MemoryRouter} from 'react-router-dom'
 import Dashboard from '../components/Dashboard'
 import EthereumWaiter from './EthereumWaiter'
 import Login from "./Login"
+import { hot } from 'react-hot-loader'
 
-export default class Application extends React.Component {
+export class Application extends React.Component {
   render () {
     return <Provider store={State.store}>
       <MemoryRouter>
@@ -20,3 +21,5 @@ export default class Application extends React.Component {
     </Provider>
   }
 }
+
+export default hot(module)(Application)
