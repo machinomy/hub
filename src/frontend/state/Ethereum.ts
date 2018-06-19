@@ -1,4 +1,4 @@
-import actionCreatorFactory, { AsyncActionCreators }  from 'typescript-fsa'
+import actionCreatorFactory, { AsyncActionCreators, EmptyActionCreator, ThunkActionCreators }  from 'typescript-fsa'
 import { bindThunkAction } from 'typescript-fsa-redux-thunk'
 import { reducerWithInitialState, ReducerBuilder } from 'typescript-fsa-reducers'
 import vynos from 'vynos'
@@ -29,6 +29,13 @@ export namespace Ethereum {
     } catch (e) {
       return FindingState.UNAVAILABLE
     }
+  })
+
+  export const displayVynosAction = actionCreator.async('displayVynos')
+
+  export const displayVynos = bindThunkAction(displayVynosAction, async () => {
+    await vynos.display()
+    return {}
   })
 
   export const reducers = reducerWithInitialState<Ethereum>(INITIAL)
