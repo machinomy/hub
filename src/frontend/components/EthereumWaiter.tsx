@@ -4,6 +4,22 @@ import { ActionCreator, Dispatch } from 'redux'
 import State from '../state/State'
 import Ethereum from '../state/Ethereum'
 
+function card (message: string) {
+  return <div className="container-fixed">
+    <div className="row justify-content-center">
+      <div className="col-4">
+        <div className="card mt-5">
+          <div className="card-body text-center">
+            <p className="my-0">
+              {message}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
 export interface StateProps {
   isEthereumAvailable: Ethereum.FindingState
 }
@@ -20,7 +36,7 @@ export class EthereumWaiter extends React.Component<StateProps & DispatchProps> 
   render () {
     switch (this.props.isEthereumAvailable) {
       case Ethereum.FindingState.CHECKING:
-        return this.renderPlaceholder()
+        return this.renderChecking()
       case Ethereum.FindingState.AVAILABLE:
         return this.renderChildren()
       case Ethereum.FindingState.UNAVAILABLE:
@@ -29,15 +45,15 @@ export class EthereumWaiter extends React.Component<StateProps & DispatchProps> 
   }
 
   renderUnavailable () {
-    return <div>Unavailable</div>
+    return card('Can not load Vynos wallet. Please use a modern browser.')
   }
 
   renderChildren () {
     return this.props.children
   }
 
-  renderPlaceholder () {
-    return <div>Waiting...</div>
+  renderChecking () {
+    return card('Checking for Vynos...')
   }
 }
 

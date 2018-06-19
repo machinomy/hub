@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { ActionCreator, Dispatch } from 'redux'
 import State from '../state/State'
 import Ethereum from '../state/Ethereum'
+import Navbar from "./Navbar";
 
 export interface StateProps {
   isEthereumAvailable: Ethereum.FindingState
@@ -16,11 +17,9 @@ export class Dashboard extends React.Component<StateProps & DispatchProps> {
   }
 
   render () {
-    return <div id="app">
-      Dashboard
-      <div>
-        {this.props.children}
-      </div>
+    return <div>
+      <Navbar />
+      {this.props.children}
     </div>
   }
 }

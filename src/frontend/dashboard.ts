@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 import Application from './components/Application'
 
 require('bootstrap/dist/css/bootstrap.css')
+require('bootstrap/dist/js/bootstrap.bundle.js')
+require('jquery/dist/jquery.js')
 
 let element = React.createElement(Application)
 
