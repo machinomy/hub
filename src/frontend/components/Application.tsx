@@ -10,14 +10,18 @@ import { hot } from 'react-hot-loader'
 export class Application extends React.Component {
   render () {
     return <Provider store={State.store}>
-      <MemoryRouter>
-        <EthereumWaiter>
+      <EthereumWaiter>
+        <MemoryRouter>
           <Switch>
             <Route exact={true} path="/login" component={Login} />
-            <Route path="/" component={Dashboard} />
+            <Route path="/">
+              <Dashboard>
+                <p>Foo</p>
+              </Dashboard>
+            </Route>
           </Switch>
-        </EthereumWaiter>
-      </MemoryRouter>
+        </MemoryRouter>
+      </EthereumWaiter>
     </Provider>
   }
 }

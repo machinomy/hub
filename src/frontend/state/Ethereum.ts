@@ -5,11 +5,11 @@ import vynos from 'vynos'
 
 const actionCreator = actionCreatorFactory('ethereum')
 
-export interface Ethereum {
+interface Ethereum {
   isAvailable: Ethereum.FindingState
 }
 
-export namespace Ethereum {
+namespace Ethereum {
   export enum FindingState {
     CHECKING,
     AVAILABLE,

@@ -1,40 +1,31 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { ActionCreator, Dispatch } from 'redux'
 import State from '../state/State'
-import Ethereum from '../state/Ethereum'
-import Navbar from "./Navbar";
+import Navbar from './Navbar'
+import {Redirect, RouteComponentProps, withRouter} from 'react-router'
 
 export interface StateProps {
-  isEthereumAvailable: Ethereum.FindingState
+  isAuthenticated: boolean
 }
 
-export interface DispatchProps {
-}
+export type Props = RouteComponentProps<{}> & StateProps
 
-export class Dashboard extends React.Component<StateProps & DispatchProps> {
-  async componentDidMount () {
-  }
-
+export class Dashboard extends React.Component<Props> {
   render () {
-    return <div>
-      <Navbar />
-      {this.props.children}
-    </div>
+    if (this.props.isAuthenticated) {
+      return <div>
+        <Navbar />
+      </div>
+    } else {
+      return <Redirect push to='/login' />
+    }
   }
 }
 
 function mapStateToProps (state: State): StateProps {
   return {
-    isEthereumAvailable: state.ethereum.isAvailable
+    isAuthenticated: state.auth.isAuthenticated
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<any>) {
-  return {
-    // queryEthereum: () => dispatch(Ethereum.findProvider({}))
-  }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default withRouter(connect(mapStateToProps)(Dashboard))
