@@ -5,16 +5,16 @@ const typeDefs = `
   type Query {
     books: [Book]
   }
-  
+
   type Mutation {
     createNonce(address: String!): Nonce
   }
-  
+
   type Book {
     title: String
     author: String
   }
-  
+
   type Nonce {
     value: String!
     address: String!
@@ -24,7 +24,7 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    books: () => [{title: 'The Daemons', author: 'Dostoyevsky'}]
+    books: () => [{ title: 'The Daemons', author: 'Dostoyevsky' }]
   },
   Mutation: {
     createNonce: (address: string) => {

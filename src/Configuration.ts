@@ -5,6 +5,7 @@ export interface Configuration {
   address: string
   ethereumUrl: string
   databaseUrl: string
+  redisUrl: string
   isDevelopment: boolean
 }
 
@@ -16,9 +17,10 @@ export namespace Configuration {
 
     return {
       port: Number(process.env.PORT),
-      address: String(process.env.HUB_ADDRESS),
-      ethereumUrl: String(process.env.ETH_RPC_URL),
-      databaseUrl: String(process.env.DATABASE_URL),
+      address: process.env.HUB_ADDRESS || 'localhost',
+      ethereumUrl: process.env.ETH_RPC_URL || 'http://localhost:8545',
+      databaseUrl: process.env.DATABASE_URL || 'postgres://localhost@hub',
+      redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
       isDevelopment: isDevelopment
     }
   }

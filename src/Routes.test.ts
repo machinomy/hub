@@ -13,9 +13,9 @@ beforeAll(async () => {
   app.use(routes.middleware)
 })
 
-test('GET / redirect to /frontend', async () => {
+test('GET / redirect to /dashboard', async () => {
   const response = await request(app.callback()).get('/')
   expect(response.redirect).toBe(true)
-  expect(response.header['location']).toBe('/frontend')
+  expect(response.header['location']).toBe('/dashboard')
   expect(response.body).toEqual({})
 })
