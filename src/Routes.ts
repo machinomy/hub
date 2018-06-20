@@ -1,23 +1,31 @@
 import * as Router from 'koa-router'
-import PaymentsController from './controllers/PaymentsController'
-import DashboardController from './controllers/DashboardController'
-import AssetsController from './controllers/AssetsController'
+import Controllers from './controllers/Controllers'
 
 /**
  * Set namespaces for controllers
  */
 export default class Routes {
-  private readonly payments: PaymentsController
   public readonly middleware: Router.IMiddleware
+  public readonly allowedMethods: Router.IMiddleware
 
-  constructor (dashboard: DashboardController, payments: PaymentsController, assets: AssetsController) {
-    this.payments = payments
+  constructor (controllers: Controllers, isDevelopment: boolean) {
 
     let router = new Router()
-    router.use('/payments', payments.middleware)
-    router.use('/dashboard', dashboard.middleware)
+    router.use('/payments', controllers.payments.middleware)
+    router.use('/dashboard', controllers.dashboard.middleware)
+    router.use('/dashboard', controllers.dashboard.allowedMethods)
+    router.use('/graphql', controllers.graphql.middleware)
+    router.use('/graphql', controllers.graphql.allowedMethods)
+
+    if (isDevelopment) {
+      router.use('/graphiql', controllers.graphiql.middleware)
+      router.use('/graphiql', controllers.graphiql.allowedMethods)
+    }
+
     router.redirect('/', '/dashboard')
-    router.use('/', assets.middleware)
+    router.use('/', controllers.assets.middleware)
+
     this.middleware = router.middleware()
+    this.allowedMethods = router.allowedMethods()
   }
 }

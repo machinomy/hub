@@ -15,6 +15,7 @@ export default class HttpEndpoint {
     this.app = new Koa()
     this.app.use(bodyParser())
     this.app.use(routes.middleware)
+    this.app.use(routes.allowedMethods)
     this.port = port
   }
 

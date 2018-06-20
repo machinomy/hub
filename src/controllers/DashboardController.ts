@@ -5,11 +5,13 @@ import * as path from "path";
 
 export default class DashboardController {
   readonly middleware: Middleware
+  readonly allowedMethods: Middleware
 
   constructor () {
     let router = new Router()
     router.get('/', this.welcome.bind(this))
     this.middleware = router.routes()
+    this.allowedMethods = router.allowedMethods()
   }
 
   async welcome (ctx: Router.IRouterContext) {

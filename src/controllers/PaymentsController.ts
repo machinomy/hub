@@ -7,6 +7,7 @@ const log = new Logger('hub:payments-router')
 
 export default class PaymentsController {
   middleware: Middleware
+  allowedMethods: Middleware
   machinomy: Machinomy
 
   constructor (machinomy: Machinomy) {
@@ -18,6 +19,7 @@ export default class PaymentsController {
     router.get('/verify/:token', this.verify.bind(this))
 
     this.middleware = router.routes()
+    this.allowedMethods = router.allowedMethods()
   }
 
   async heartbeat (ctx: Router.IRouterContext) {

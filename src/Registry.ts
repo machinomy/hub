@@ -7,6 +7,10 @@ import * as Web3 from 'web3'
 import Routes from "./Routes";
 import DashboardController from "./controllers/DashboardController";
 import AssetsController from "./controllers/AssetsController";
+import Controllers from "./controllers/Controllers";
+import GraphqlController from "./controllers/GraphqlController";
+import GraphiqlController from "./controllers/GraphiqlController";
+import GraphqlService from "./services/GraphqlService";
 
 export default class Registry {
   configuration: Configuration
@@ -35,27 +39,27 @@ export default class Registry {
   }
 
   @memoize
-  async paymentsController (): Promise<PaymentsController> {
+  async graphqlService (): Promise<GraphqlService> {
+    return new GraphqlService()
+  }
+
+  @memoize
+  async controllers (): Promise<Controllers> {
     let machinomy = await this.machinomy()
-    return new PaymentsController(machinomy)
-  }
-
-  @memoize
-  async dashboardController (): Promise<DashboardController> {
-    return new DashboardController()
-  }
-
-  @memoize
-  async assetsController (): Promise<AssetsController> {
-    return new AssetsController()
+    let graphqlService = await this.graphqlService()
+    return {
+      assets: new AssetsController(),
+      payments: new PaymentsController(machinomy),
+      dashboard: new DashboardController(),
+      graphql: new GraphqlController(graphqlService),
+      graphiql: new GraphiqlController()
+    }
   }
 
   @memoize
   async routes (): Promise<Routes> {
-    let payments = await this.paymentsController()
-    let dashboard = await this.dashboardController()
-    let assets = await this.assetsController()
-    return new Routes(dashboard, payments, assets)
+    let controllers = await this.controllers()
+    return new Routes(controllers, this.configuration.isDevelopment)
   }
 
   @memoize
