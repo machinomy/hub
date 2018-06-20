@@ -14,8 +14,8 @@ export default class AuthController {
     this.authService = authService
 
     let router = new Router()
-    router.get('/challenge', this.generateChallenge.bind(this))
-    router.post('/challenge', this.acceptChallenge.bind(this))
+    router.get('/challenge', this.getChallenge.bind(this))
+    router.post('/challenge', this.postChallenge.bind(this))
     this.middleware = router.routes()
     this.allowedMethods = router.allowedMethods()
   }
@@ -23,28 +23,27 @@ export default class AuthController {
   /**
    * Generate random nonce for address.
    */
-  async generateChallenge (ctx: Router.IRouterContext) {
+  async getChallenge (ctx: Router.IRouterContext) {
     const address = ctx.query.address
     const nonce = await this.authService.challenge(address)
     log.info('Send challenge nonce')
     ctx.body = { nonce }
   }
 
-  async acceptChallenge (ctx: Router.IRouterContext) {
-    const address = ctx.body.address
-    const nonce = ctx.body.nonce
-    const signature = ctx.body.signature
+  async postChallenge (ctx: Router.IRouterContext) {
+    const body = ctx.request.body
+    const address = body.address
+    const nonce = body.nonce
+    const signature = body.signature
 
     // TODO Add validation for the fields
     // TODO Check origin against whitelist
     // TODO Check origin
     // TODO Save in session
     let isAccepted = await this.authService.canAccept(address, nonce, signature)
-    if (isAccepted) {
-      ctx.body = { isAccepted: true }
-    } else {
-      ctx.res.statusCode = 400
-    }
+
+    ctx.body = { isAccepted }
+    if (!isAccepted) ctx.res.statusCode = 400
 
     // const address = req.body.address
     //     const nonce = req.body.nonce
