@@ -9,8 +9,8 @@ export default class GraphiqlController {
   constructor () {
     let router = new Router()
     let engine = graphiqlKoa({
-        endpointURL: '/graphql', // a POST endpoint that GraphiQL will make the actual requests to
-      })
+      endpointURL: '/graphql' // a POST endpoint that GraphiQL will make the actual requests to
+    })
     router.get('/', engine)
     this.middleware = router.routes()
     this.allowedMethods = router.allowedMethods()

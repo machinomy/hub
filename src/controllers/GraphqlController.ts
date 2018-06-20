@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import { Middleware } from 'koa'
 import { graphqlKoa } from 'apollo-server-koa'
-import GraphqlService from "../services/GraphqlService";
+import GraphqlService from '../services/GraphqlService'
 
 export default class GraphqlController {
   readonly middleware: Middleware

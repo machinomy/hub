@@ -4,7 +4,7 @@ import { ActionCreator, Dispatch } from 'redux'
 import State from '../state/State'
 import vynos from 'vynos'
 import { RouteComponentProps, withRouter } from 'react-router'
-import Auth from "../state/Auth";
+import Auth from '../state/Auth'
 
 export interface StateProps {
   isAuthenticated: boolean

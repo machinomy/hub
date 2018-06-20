@@ -2,7 +2,6 @@ import * as Router from 'koa-router'
 import { Middleware } from 'koa'
 import IAuthService from '../services/IAuthService'
 import Logger from '../support/Logger'
-import * as validate from 'validate.js'
 
 const log = new Logger('controller:auth')
 
@@ -26,7 +25,7 @@ export default class AuthController {
    */
   async generateChallenge (ctx: Router.IRouterContext) {
     const address = ctx.query.address
-    const nonce = await this.authService.generateChallenge(address)
+    const nonce = await this.authService.challenge(address)
     log.info('Send challenge nonce')
     ctx.body = { nonce }
   }
@@ -40,13 +39,12 @@ export default class AuthController {
     // TODO Check origin against whitelist
     // TODO Check origin
     // TODO Save in session
-    let isAccepted = await this.authService.acceptChallenge(address, nonce, signature)
+    let isAccepted = await this.authService.canAccept(address, nonce, signature)
     if (isAccepted) {
       ctx.body = { isAccepted: true }
     } else {
       ctx.res.statusCode = 400
     }
-
 
     // const address = req.body.address
     //     const nonce = req.body.nonce

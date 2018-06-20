@@ -1,14 +1,15 @@
-import HexString from "../domain/HexString";
-import Address from "../domain/Address";
-import * as util from "ethereumjs-util";
-import AuthNonce from "../domain/AuthNonce";
+import HexString from '../domain/HexString'
+import Address from '../domain/Address'
+import * as util from 'ethereumjs-util'
+import AuthNonce from '../domain/AuthNonce'
 import { Buffer } from 'safe-buffer'
-import Eth from "./Eth";
+import Eth from './Eth'
+import IAuthentication from './IAuthentication'
 
 const HASH_PREAMBLE = 'Machinomy authentication message:'
 const ETH_PREAMBLE = '\x19Ethereum Signed Message:\n'
 
-export default class Authentication {
+export default class Authentication implements IAuthentication {
   eth: Eth
 
   constructor (eth: Eth) {
@@ -38,7 +39,7 @@ export default class Authentication {
     return util.bufferToHex(recoveredAddress)
   }
 
-  async toHash(nonce: AuthNonce): Promise<HexString> {
+  protected async toHash (nonce: AuthNonce): Promise<HexString> {
     return this.eth.sha3(`${HASH_PREAMBLE} ${this.eth.sha3(nonce)}`)
   }
 }

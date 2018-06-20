@@ -2,10 +2,10 @@ import AuthNonce from '../domain/AuthNonce'
 import Address from '../domain/Address'
 import * as validate from 'validate.js'
 
-import IAuthNonceDatabase from "./IAuthNonceDatabase";
-import {RedisClient} from "redis"
+import IAuthNonceDatabase from './IAuthNonceDatabase'
+import { RedisClient } from 'redis'
 
-function authKey(address: Address, nonce: AuthNonce) {
+function authKey (address: Address, nonce: AuthNonce) {
   return `auth:${address}:${nonce}`
 }
 
@@ -22,11 +22,8 @@ export default class AuthNonceDatabase implements IAuthNonceDatabase {
 
   async save (address: Address, nonce: AuthNonce): Promise<void> {
     let key = authKey(address, nonce)
-    console.log('ley', key)
     await this.set(key, nonce)
-    console.log('ssdds')
     await this.expire(key)
-    console.log('expire')
   }
 
   async isPresent (address: Address, nonce: AuthNonce): Promise<boolean> {

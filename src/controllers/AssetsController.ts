@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import { Middleware } from 'koa'
 import * as send from 'koa-send'
-import * as path from "path";
+import * as path from 'path'
 
 export default class AssetsController {
   readonly middleware: Middleware

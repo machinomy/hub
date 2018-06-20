@@ -1,6 +1,6 @@
-import actionCreatorFactory, { AsyncActionCreators, EmptyActionCreator, ThunkActionCreators }  from 'typescript-fsa'
+import actionCreatorFactory from 'typescript-fsa'
 import { bindThunkAction } from 'typescript-fsa-redux-thunk'
-import { reducerWithInitialState, ReducerBuilder } from 'typescript-fsa-reducers'
+import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers'
 
 const actionCreator = actionCreatorFactory('auth')
 
@@ -25,7 +25,7 @@ namespace Auth {
     return 'address'
   })
 
-  export const reducers = reducerWithInitialState<Auth>(INITIAL)
+  export const reducers: ReducerBuilder<Auth, Auth> = reducerWithInitialState<Auth>(INITIAL)
     .case(authenticateAction.started, state => state)
     .case(authenticateAction.failed, state => state)
     .case(authenticateAction.done, state => state)

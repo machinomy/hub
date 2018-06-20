@@ -4,13 +4,13 @@ import HttpEndpoint from './HttpEndpoint'
 import PaymentsController from './controllers/PaymentsController'
 import Machinomy from 'machinomy'
 import * as Web3 from 'web3'
-import Routes from "./Routes";
-import DashboardController from "./controllers/DashboardController";
-import AssetsController from "./controllers/AssetsController";
-import Controllers from "./controllers/Controllers";
-import GraphqlController from "./controllers/GraphqlController";
-import GraphiqlController from "./controllers/GraphiqlController";
-import GraphqlService from "./services/GraphqlService";
+import Routes from './Routes'
+import DashboardController from './controllers/DashboardController'
+import AssetsController from './controllers/AssetsController'
+import Controllers from './controllers/Controllers'
+import GraphqlController from './controllers/GraphqlController'
+import GraphiqlController from './controllers/GraphiqlController'
+import GraphqlService from './services/GraphqlService'
 
 export default class Registry {
   configuration: Configuration

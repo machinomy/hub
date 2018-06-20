@@ -1,8 +1,9 @@
-import { createStore, applyMiddleware, combineReducers, Store } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import logger from 'redux-logger'
 import Ethereum from './Ethereum'
 import Auth from './Auth'
+import { Store } from 'react-redux'
 
 export interface State {
   ethereum: Ethereum
@@ -10,13 +11,13 @@ export interface State {
 }
 
 export namespace State {
-  const reducers = combineReducers({
+  const reducers = combineReducers<State>({
     ethereum: Ethereum.reducers,
     auth: Auth.reducers
   })
   const middleware = applyMiddleware(thunk, logger)
 
-  export const store = createStore(reducers, middleware)
+  export const store: Store<State> = createStore<State>(reducers, middleware)
 }
 
 export default State

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import State from '../state/State'
 import Navbar from './Navbar'
-import {Redirect, RouteComponentProps, withRouter} from 'react-router'
+import { Redirect, RouteComponentProps, withRouter } from 'react-router'
 
 export interface StateProps {
   isAuthenticated: boolean
@@ -17,7 +17,7 @@ export class Dashboard extends React.Component<Props> {
         <Navbar />
       </div>
     } else {
-      return <Redirect push to='/login' />
+      return <Redirect to="/login" />
     }
   }
 }

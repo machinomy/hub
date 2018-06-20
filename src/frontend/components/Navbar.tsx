@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { Route } from 'react-router'
 import { Link } from 'react-router-dom'
-import {connect} from "react-redux";
-import {Dashboard, StateProps} from "./Dashboard";
-import State from "../state/State";
+import { connect } from 'react-redux'
+import State from '../state/State'
 import Ethereum from '../state/Ethereum'
 import { ActionCreator, Dispatch } from 'redux'
 
@@ -72,6 +71,5 @@ function mapDispatchToProps (dispatch: Dispatch<any>) {
     displayVynos: () => dispatch(Ethereum.displayVynos({}))
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

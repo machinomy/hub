@@ -4,6 +4,10 @@ import AuthNonce from '../domain/AuthNonce'
 import HexString from '../domain/HexString'
 import IAuthNonceDatabase from '../storage/IAuthNonceDatabase'
 import * as uuid from 'uuid'
+import Logger from '../support/Logger'
+import IAuthentication from '../support/IAuthentication'
+
+const log = new Logger('service:auth')
 
 function uuidNonce () {
   return uuid.v4()
@@ -11,43 +15,30 @@ function uuidNonce () {
 
 export default class AuthService implements IAuthService {
   database: IAuthNonceDatabase
+  authentication: IAuthentication
 
-  constructor (database: IAuthNonceDatabase) {
+  constructor (database: IAuthNonceDatabase, authentication: IAuthentication) {
     this.database = database
+    this.authentication = authentication
   }
 
-  async generateChallenge(address: Address, nextNonce: () => string = uuidNonce): Promise<AuthNonce> {
+  async challenge (address: Address, nextNonce: () => string = uuidNonce): Promise<AuthNonce> {
     let nonce = nextNonce()
+    log.debug(`Generate nonce ${nonce} for ${address}`)
     await this.database.save(address, nonce)
     return nonce
   }
 
-  async acceptChallenge (address: Address, nonce: AuthNonce, signature: HexString): Promise<boolean> {
-    // let nonce = await this.database.retrieve(address, nonce)
-
-    return true
-    // const creation = this.nonces[nonce]
-    //
-    // if (!creation) {
-    //   LOG.warn(`Nonce ${nonce} not found.`)
-    //   return null
-    // }
-    //
-    // const hash = this.sha3(`${MemoryCRAuthManager.HASH_PREAMBLE} ${this.sha3(nonce)} ${this.sha3(origin)}`)
-    // const sigAddr = this.extractAddress(hash, signature)
-    //
-    // if (!sigAddr || sigAddr !== address) {
-    //   LOG.warn(`Received invalid signature. Expected address: ${address}. Got address: ${sigAddr}.`)
-    //   return null
-    // }
-    //
-    // if (Date.now() - creation > CHALLENGE_EXPIRY_MS) {
-    //   LOG.warn(`Nonce for address ${sigAddr} is expired.`)
-    //   return null
-    // }
-    //
-    // delete this.nonces[nonce]
-    //
-    // return sigAddr
+  async canAccept (address: Address, nonce: AuthNonce, signature: HexString): Promise<boolean> {
+    let isPresent = await this.database.isPresent(address, nonce)
+    if (isPresent) {
+      let recovered = await this.authentication.recoverAddress(address, nonce, signature)
+      let canAccept = address === recovered
+      if (!canAccept) log.info(`Wrong challenge response for ${address}, recovered address is ${recovered}`)
+      return canAccept
+    } else {
+      log.info(`Nonce ${nonce} for address ${address} not found`)
+      return false
+    }
   }
 }

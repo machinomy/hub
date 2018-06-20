@@ -1,6 +1,6 @@
-import actionCreatorFactory, { AsyncActionCreators, EmptyActionCreator, ThunkActionCreators }  from 'typescript-fsa'
+import actionCreatorFactory from 'typescript-fsa'
 import { bindThunkAction } from 'typescript-fsa-redux-thunk'
-import { reducerWithInitialState, ReducerBuilder } from 'typescript-fsa-reducers'
+import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers'
 import vynos from 'vynos'
 
 const actionCreator = actionCreatorFactory('ethereum')
@@ -20,7 +20,7 @@ namespace Ethereum {
     isAvailable: FindingState.CHECKING
   }
 
-  export const findProviderAction = actionCreator.async<{}, FindingState>('findProvider')
+  const findProviderAction = actionCreator.async<{}, FindingState>('findProvider')
 
   export const findProvider = bindThunkAction(findProviderAction, async () => {
     try {
@@ -31,14 +31,14 @@ namespace Ethereum {
     }
   })
 
-  export const displayVynosAction = actionCreator.async('displayVynos')
+  const displayVynosAction = actionCreator.async('displayVynos')
 
   export const displayVynos = bindThunkAction(displayVynosAction, async () => {
     await vynos.display()
     return {}
   })
 
-  export const reducers = reducerWithInitialState<Ethereum>(INITIAL)
+  export const reducers: ReducerBuilder<Ethereum, Ethereum> = reducerWithInitialState<Ethereum>(INITIAL)
     .case(findProviderAction.started, state => ({ ...state, isAvailable: FindingState.CHECKING }))
     .case(findProviderAction.failed, state => ({ ...state, isAvailable: FindingState.UNAVAILABLE }))
     .case(findProviderAction.done, (state, params) => ({ ...state, isAvailable: params.result }))

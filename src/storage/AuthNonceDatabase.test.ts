@@ -1,8 +1,8 @@
 import * as expect from 'expect'
 import AuthNonceDatabase from './AuthNonceDatabase'
-import {RedisClient} from "redis";
+import { RedisClient } from 'redis'
 
-function database(implementation: any) {
+function database (implementation: any) {
   const DummyRedisClient = jest.fn<RedisClient>(() => implementation)
   const client = new DummyRedisClient()
   const db = new AuthNonceDatabase(client)
