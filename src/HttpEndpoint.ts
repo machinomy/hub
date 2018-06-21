@@ -2,6 +2,7 @@ import * as Koa from 'koa'
 import * as http from 'http'
 import Logger from './support/Logger'
 import * as bodyParser from 'koa-bodyparser'
+import * as session from 'koa-session'
 import Routes from './Routes'
 
 const log = new Logger('hub:http-endpoint')
@@ -11,8 +12,10 @@ export default class HttpEndpoint {
   private readonly port: number
   private server?: http.Server
 
-  constructor (port: number, routes: Routes) {
+  constructor (port: number, keys: Array<string>, routes: Routes) {
     this.app = new Koa()
+    this.app.keys = keys
+    this.app.use(session(this.app))
     this.app.use(bodyParser())
     this.app.use(routes.middleware)
     this.app.use(routes.allowedMethods)

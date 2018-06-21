@@ -65,6 +65,6 @@ export default class Registry {
   @memoize
   async httpEndpoint (): Promise<HttpEndpoint> {
     let routes = await this.routes()
-    return new HttpEndpoint(this.configuration.port, routes)
+    return new HttpEndpoint(this.configuration.port, this.configuration.sessionKeys, routes)
   }
 }

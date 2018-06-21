@@ -9,7 +9,7 @@ function authKey (address: Address, nonce: AuthNonce) {
   return `auth:${address}:${nonce}`
 }
 
-const TTL = 60 * 10 // 10 minutes in seconds
+const TTL = 60 * 60 * 48 // 2 days
 
 export default class AuthNonceDatabase implements IAuthNonceDatabase {
   nonces: Map<AuthNonce, Date>

@@ -7,21 +7,31 @@ export interface Configuration {
   databaseUrl: string
   redisUrl: string
   isDevelopment: boolean
+  sessionKeys: Array<string>
 }
 
 export namespace Configuration {
+  function isDevelopment (): boolean {
+    const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
+    return nodeEnv === 'development'
+  }
+
+  function sessionKeys (): Array<string> {
+    const raw = process.env.SESSION_KEYS || 'machinomy-hub-7ed7d1e415137f51272715234b9d7583'
+    return raw.split(',')
+  }
+
   export async function env (options?: dotenv.DotenvOptions): Promise<Configuration> {
     dotenv.load(options)
-    const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
-    const isDevelopment = nodeEnv === 'development'
 
     return {
       port: Number(process.env.PORT),
-      address: process.env.HUB_ADDRESS || 'localhost',
-      ethereumUrl: process.env.ETH_RPC_URL || 'http://localhost:8545',
+      address: process.env.HUB_ADDRESS      || 'localhost',
+      ethereumUrl: process.env.ETH_RPC_URL  || 'http://localhost:8545',
       databaseUrl: process.env.DATABASE_URL || 'postgres://localhost@hub',
-      redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
-      isDevelopment: isDevelopment
+      redisUrl: process.env.REDIS_URL       || 'redis://localhost:6379',
+      isDevelopment: isDevelopment(),
+      sessionKeys: sessionKeys()
     }
   }
 }

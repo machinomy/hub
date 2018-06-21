@@ -2,8 +2,8 @@ import * as request from 'supertest'
 import * as Koa from 'koa'
 import AuthController from "./AuthController";
 import IAuthService from "../services/IAuthService";
-import {NONAME} from 'dns';
-import bodyParser = require('koa-bodyparser');
+import * as session from 'koa-session'
+import * as bodyParser from 'koa-bodyparser'
 
 const ADDRESS = '0xADDRESS'
 const nonce = async (address: string) => `NONCE FOR ${address}`
@@ -33,6 +33,8 @@ describe('POST /challenge', () => {
     }))
 
     const authController = new AuthController(new AuthService())
+    app.keys = [ 'SECRET' ]
+    app.use(session(app))
     app.use(bodyParser())
     app.use(authController.middleware)
 
@@ -42,8 +44,12 @@ describe('POST /challenge', () => {
       signature: 'SIGNATURE'
     })
 
-    expect(response.status).toBe(200)
+    expect(response.ok).toBe(true)
     expect(response.body).toEqual({ isAccepted: true })
+
+    const cookie = response.header['set-cookie']
+    expect(cookie).toHaveLength(1)
+    expect(cookie[0]).toBeTruthy()
   })
 
   test('not accept', async () => {
@@ -53,6 +59,8 @@ describe('POST /challenge', () => {
     }))
 
     const authController = new AuthController(new AuthService())
+    app.keys = [ 'SECRET' ]
+    app.use(session(app))
     app.use(bodyParser())
     app.use(authController.middleware)
 
@@ -62,7 +70,8 @@ describe('POST /challenge', () => {
       signature: 'SIGNATURE'
     })
 
-    expect(response.status).toBe(400)
+    expect(response.badRequest).toBe(true)
     expect(response.body).toEqual({ isAccepted: false })
+    expect(response.header['set-cookie']).toBeFalsy()
   })
 })
