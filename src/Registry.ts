@@ -11,6 +11,14 @@ import Controllers from './controllers/Controllers'
 import GraphqlController from './controllers/GraphqlController'
 import GraphiqlController from './controllers/GraphiqlController'
 import GraphqlService from './services/GraphqlService'
+import AuthController from './controllers/AuthController'
+import IAuthService from './services/IAuthService'
+import AuthService from './services/AuthService'
+import { RedisClient } from 'redis'
+import AuthNonceDatabase from './storage/AuthNonceDatabase'
+import IAuthentication from './support/IAuthentication'
+import Authentication from './support/Authentication'
+import Eth from './support/Eth'
 
 export default class Registry {
   configuration: Configuration
@@ -39,6 +47,31 @@ export default class Registry {
   }
 
   @memoize
+  async redisClient (): Promise<RedisClient> {
+    return new RedisClient({ url: this.configuration.redisUrl })
+  }
+
+  @memoize
+  async eth (): Promise<Eth> {
+    let web3 = await this.web3()
+    return new Eth(web3)
+  }
+
+  @memoize
+  async authentication (): Promise<IAuthentication> {
+    let eth = await this.eth()
+    return new Authentication(eth)
+  }
+
+  @memoize
+  async authService (): Promise<IAuthService> {
+    let redisClient = await this.redisClient()
+    let database = new AuthNonceDatabase(redisClient)
+    let authentication = await this.authentication()
+    return new AuthService(database, authentication)
+  }
+
+  @memoize
   async graphqlService (): Promise<GraphqlService> {
     return new GraphqlService()
   }
@@ -47,12 +80,14 @@ export default class Registry {
   async controllers (): Promise<Controllers> {
     let machinomy = await this.machinomy()
     let graphqlService = await this.graphqlService()
+    let authService = await this.authService()
     return {
       assets: new AssetsController(),
       payments: new PaymentsController(machinomy),
       dashboard: new DashboardController(),
       graphql: new GraphqlController(graphqlService),
-      graphiql: new GraphiqlController()
+      graphiql: new GraphiqlController(),
+      auth: new AuthController(authService)
     }
   }
 

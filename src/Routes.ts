@@ -12,6 +12,8 @@ export default class Routes {
 
     let router = new Router()
     router.use('/payments', controllers.payments.middleware)
+    router.use('/auth', controllers.auth.middleware)
+    router.use('/auth', controllers.auth.allowedMethods)
     router.use('/dashboard', controllers.dashboard.middleware)
     router.use('/dashboard', controllers.dashboard.allowedMethods)
     router.use('/graphql', controllers.graphql.middleware)

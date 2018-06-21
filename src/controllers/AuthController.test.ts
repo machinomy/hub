@@ -1,7 +1,7 @@
 import * as request from 'supertest'
 import * as Koa from 'koa'
-import AuthController from "./AuthController";
-import IAuthService from "../services/IAuthService";
+import AuthController from './AuthController'
+import IAuthService from '../services/IAuthService'
 import * as session from 'koa-session'
 import * as bodyParser from 'koa-bodyparser'
 
