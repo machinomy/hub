@@ -19,6 +19,8 @@ import AuthNonceDatabase from './storage/AuthNonceDatabase'
 import IAuthentication from './support/IAuthentication'
 import Authentication from './support/Authentication'
 import Eth from './support/Eth'
+import ICorsService from './services/ICorsService';
+import CorsService from './services/CorsService';
 
 export default class Registry {
   configuration: Configuration
@@ -99,8 +101,14 @@ export default class Registry {
   }
 
   @memoize
+  async corsService (): Promise<ICorsService> {
+    return new CorsService()
+  }
+
+  @memoize
   async httpEndpoint (): Promise<HttpEndpoint> {
     let routes = await this.routes()
-    return new HttpEndpoint(this.configuration.port, this.configuration.sessionKeys, routes)
+    let cors = await this.corsService()
+    return new HttpEndpoint(this.configuration.port, this.configuration.sessionKeys, routes, cors)
   }
 }

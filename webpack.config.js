@@ -24,7 +24,7 @@ const svgCopyConfig = new CopyPlugin([{
   transform: (content, path) => svgo.optimize(content, {path})
 }])
 
-const env = new webpack.EnvironmentPlugin({ NODE_ENV: 'development' })
+const env = new webpack.EnvironmentPlugin({ NODE_ENV: 'development', HUB_URL: null })
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',

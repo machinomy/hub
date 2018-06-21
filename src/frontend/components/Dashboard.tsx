@@ -15,6 +15,7 @@ export class Dashboard extends React.Component<Props> {
     if (this.props.isAuthenticated) {
       return <div>
         <Navbar />
+        {this.props.children}
       </div>
     } else {
       return <Redirect to="/login" />

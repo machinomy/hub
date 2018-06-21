@@ -2,12 +2,11 @@ import AuthNonce from '../../domain/AuthNonce'
 import Address from '../../domain/Address'
 import HexString from '../../domain/HexString'
 import Logger from '../../support/Logger'
+import Indexed from '../../support/Indexed'
 
 const log = new Logger('backend')
 
-export interface Indexed {
-  [k: string]: string
-}
+const HUB_URL = process.env.HUB_URL || `${window.location.protocol}//${window.location.host}`
 
 async function get(url: string, params?: Indexed) {
   let _url = new URL(url)
@@ -65,7 +64,7 @@ export class AuthBackend {
 export default class Backend {
   auth: AuthBackend
 
-  constructor (hubUrl: string) {
-    this.auth = new AuthBackend(hubUrl)
+  constructor () {
+    this.auth = new AuthBackend(HUB_URL)
   }
 }

@@ -13,8 +13,7 @@ interface Auth {
   address?: Address
 }
 
-let hubUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
-let backend = new Backend(hubUrl)
+let backend = new Backend()
 let authClient = new AuthClient(backend)
 
 namespace Auth {

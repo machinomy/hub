@@ -3,7 +3,7 @@ import { makeExecutableSchema } from 'graphql-tools'
 import * as fs from 'fs'
 import * as path from 'path'
 import Machinomy from 'machinomy/lib/Machinomy';
-import {PaymentChannelJSON, PaymentChannelSerde} from 'machinomy/lib/PaymentChannel';
+import {PaymentChannelJSON, PaymentChannelSerde, SerializedPaymentChannel} from 'machinomy/lib/PaymentChannel';
 import {memoize} from 'decko';
 import {Context} from 'koa';
 
@@ -29,13 +29,11 @@ export default class GraphqlService {
     return fs.readFileSync(SCHEMA).toString()
   }
 
-  async channelsQuery (ctx: Context) {
-    console.log(ctx.session)
-    if (ctx.session) {
-      console.log('address', ctx.session.address)
-    }
+  async channelsQuery (ctx: Context): Promise<Array<SerializedPaymentChannel>> {
     let channels = await this.machinomy.channels()
-    return await channels.map(PaymentChannelSerde.instance.serialize.bind(PaymentChannelSerde.instance))
+    return await channels.map(channel => {
+      return PaymentChannelSerde.instance.serialize(channel)
+    })
   }
 
   @memoize

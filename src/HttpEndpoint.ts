@@ -4,6 +4,7 @@ import Logger from './support/Logger'
 import * as bodyParser from 'koa-bodyparser'
 import * as session from 'koa-session'
 import Routes from './Routes'
+import ICorsService from './services/ICorsService'
 
 const log = new Logger('hub:http-endpoint')
 
@@ -12,9 +13,10 @@ export default class HttpEndpoint {
   private readonly port: number
   private server?: http.Server
 
-  constructor (port: number, keys: Array<string>, routes: Routes) {
+  constructor (port: number, keys: Array<string>, routes: Routes, cors: ICorsService) {
     this.app = new Koa()
     this.app.keys = keys
+    this.app.use(cors.middleware)
     this.app.use(session({
       maxAge: 86400000
     }, this.app))
