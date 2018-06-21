@@ -30,6 +30,9 @@ export default class AuthController {
     ctx.response.body = { nonce }
   }
 
+  /**
+   * Accept the signed challenge.
+   */
   async postChallenge (ctx: Router.IRouterContext) {
     const body = ctx.request.body
     const address = body.address
