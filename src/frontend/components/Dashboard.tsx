@@ -24,7 +24,7 @@ export class Dashboard extends React.Component<Props> {
 
 function mapStateToProps (state: State): StateProps {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: !!state.auth.address
   }
 }
 

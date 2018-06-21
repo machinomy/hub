@@ -51,7 +51,7 @@ export class AuthBackend {
   }
 
   async getMe (): Promise<Address | null> {
-    let url = `${this.hubUrl}/auth/challenge`
+    let url = `${this.hubUrl}/auth/me`
     let result = await get(url)
     if (result.ok) {
       let json = await result.json()

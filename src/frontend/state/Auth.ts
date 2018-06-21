@@ -1,34 +1,51 @@
 import actionCreatorFactory from 'typescript-fsa'
 import { bindThunkAction } from 'typescript-fsa-redux-thunk'
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers'
+import * as Web3 from 'web3'
+import AuthClient from '../services/AuthClient';
+import Backend from '../services/Backend';
+import Eth from '../../support/Eth';
+import Address from '../../domain/Address'
 
 const actionCreator = actionCreatorFactory('auth')
 
 interface Auth {
-  isAuthenticated: boolean
+  address?: Address
 }
+
+let hubUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
+let backend = new Backend(hubUrl)
+let authClient = new AuthClient(backend)
 
 namespace Auth {
   const INITIAL: Auth = {
-    isAuthenticated: false
   }
 
-  const authenticateAction = actionCreator.async<{}, string>('authenticate')
+  const authenticateAction = actionCreator.async<Web3.Provider, Address>('authenticate')
 
-  export const authenticate = bindThunkAction(authenticateAction, async () => {
-    // const client = new AuthenticationClient(backend.fullHost(), w3(), fetch.bind(window))
-    // const accounts = await pify<string[]>(cb => w3().eth.getAccounts(cb))
-    // console.log('login.accounts', accounts)
-    // const res = await client.authenticate(accounts[0], window.location.hostname)
-    // return dispatch(setAddress(res.address))
+  export const authenticate = bindThunkAction(authenticateAction, async provider => {
+    let eth = await Eth.fromProvider(provider)
+    return authClient.authenticate(eth)
+  })
 
-    return 'address'
+  const identifyAction = actionCreator.async<{}, Address | null>('identify')
+
+  export const identify = bindThunkAction(identifyAction, async () => {
+    console.log('IDENTIFY')
+    let address = await authClient.identify()
+    console.log('GOT ADDR', address)
+    return address
   })
 
   export const reducers: ReducerBuilder<Auth, Auth> = reducerWithInitialState<Auth>(INITIAL)
-    .case(authenticateAction.started, state => state)
-    .case(authenticateAction.failed, state => state)
-    .case(authenticateAction.done, state => state)
+    .case(authenticateAction.done, (state, payload) => ({...state, address: payload.result }))
+    .case(identifyAction.done, (state, payload) => {
+      if (payload.result) {
+        return { ...state, address: payload.result }
+      } else {
+        return state
+      }
+    })
 }
 
 export default Auth

@@ -9,6 +9,16 @@ export default class Eth {
     this.web3 = web3
   }
 
+  static async fromProvider (provider: Web3.Provider): Promise<Eth> {
+    let web3 = new Web3(provider)
+    return new Eth(web3)
+  }
+
+  async firstAccount (): Promise<string | null> {
+    let accounts = await this.getAccounts()
+    return accounts[0]
+  }
+
   async getAccounts (): Promise<Array<string>> {
     return new Promise<Array<string>>((resolve, reject) => {
       this.web3.eth.getAccounts((err, accounts) => {

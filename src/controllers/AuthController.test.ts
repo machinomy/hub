@@ -75,3 +75,37 @@ describe('POST /challenge', () => {
     expect(response.header['set-cookie']).toBeFalsy()
   })
 })
+
+describe('GET /me', () => {
+  let app: Koa
+  const AuthService = jest.fn<IAuthService>()
+  const authController = new AuthController(new AuthService())
+
+  beforeEach(async () => {
+    app = new Koa()
+    app.keys = [ 'SECRET' ]
+    app.use(session(app))
+    app.use(bodyParser())
+  })
+
+  test('authenticated', async () => {
+    app.use(async (ctx, next) => {
+      if (ctx.session) ctx.session.address = ADDRESS
+      await next()
+    })
+    app.use(authController.middleware)
+
+    const response = await request(app.callback()).get('/me')
+
+    expect(response.ok).toBe(true)
+    expect(response.body).toEqual({ address: ADDRESS })
+  })
+
+  test('not authenticated', async () => {
+    app.use(authController.middleware)
+
+    const response = await request(app.callback()).get('/me')
+
+    expect(response.status).toBe(401)
+  })
+})

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { ActionCreator, Dispatch } from 'redux'
 import State from '../state/State'
 import Ethereum from '../state/Ethereum'
+import Auth from '../state/Auth';
+import Address from '../../domain/Address';
 
 function card (message: string) {
   return <div className="container-fixed">
@@ -26,10 +28,12 @@ export interface StateProps {
 
 export interface DispatchProps {
   findEthereumAvailable: ActionCreator<Promise<void>>
+  identify: ActionCreator<Promise<Address | null>>
 }
 
 export class EthereumWaiter extends React.Component<StateProps & DispatchProps> {
   async componentDidMount () {
+    await this.props.identify()
     await this.props.findEthereumAvailable()
   }
 
@@ -53,7 +57,7 @@ export class EthereumWaiter extends React.Component<StateProps & DispatchProps> 
   }
 
   renderChecking () {
-    return card('Checking for Vynos...')
+    return card('Waiting for Vynos...')
   }
 }
 
@@ -63,9 +67,10 @@ function mapStateToProps (state: State): StateProps {
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<any>) {
+function mapDispatchToProps (dispatch: Dispatch<any>): DispatchProps {
   return {
-    findEthereumAvailable: () => dispatch(Ethereum.findProvider({}))
+    findEthereumAvailable: () => dispatch(Ethereum.findProvider({})),
+    identify: () => dispatch(Auth.identify({}))
   }
 }
 

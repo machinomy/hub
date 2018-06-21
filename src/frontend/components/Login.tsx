@@ -1,17 +1,18 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { ActionCreator, Dispatch } from 'redux'
+import { Dispatch } from 'redux'
 import State from '../state/State'
 import vynos from 'vynos'
-import { RouteComponentProps, withRouter } from 'react-router'
+import {Redirect, RouteComponentProps, withRouter} from 'react-router'
 import Auth from '../state/Auth'
+import * as Web3 from 'web3'
 
 export interface StateProps {
   isAuthenticated: boolean
 }
 
 export interface DispatchProps {
-  authenticate: ActionCreator<Promise<string>>
+  authenticate: (provider: Web3.Provider) => Promise<string>
 }
 
 export type Props = RouteComponentProps<{}> & StateProps & DispatchProps
@@ -40,20 +41,27 @@ export class Login extends React.Component<Props, OwnState> {
   }
 
   render () {
-    return (
-      <div className="container-fixed">
-        <div className="row justify-content-center">
-          <div className="col-9">
-            <div className="mt-5">
-              <div className="text-center">
-                <p>Please use your Vynos account to sign in</p>
-                {this.renderButton()}
+    if (this.props.isAuthenticated) {
+      vynos.hide().then(() => {
+        // Do Nothing
+      })
+      return <Redirect to="/" />
+    } else {
+      return (
+        <div className="container-fixed">
+          <div className="row justify-content-center">
+            <div className="col-9">
+              <div className="mt-5">
+                <div className="text-center">
+                  <p>Please use your Vynos account to sign in</p>
+                  {this.renderButton()}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 
   async handleSignInButtonClick () {
@@ -62,8 +70,9 @@ export class Login extends React.Component<Props, OwnState> {
     })
 
     try {
-      await this.props.authenticate()
-      // this.props.history.push('/admin/payments')
+      let wallet = await vynos.ready()
+      await wallet.initAccount()
+      await this.props.authenticate(wallet.provider)
     } catch (e) {
       console.error(e)
       this.setState({
@@ -91,13 +100,15 @@ export class Login extends React.Component<Props, OwnState> {
 
 function mapStateToProps (state: State): StateProps {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: !!state.auth.address
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<any>) {
+function mapDispatchToProps (dispatch: Dispatch<any>): DispatchProps {
   return {
-    authenticate: () => dispatch(Auth.authenticate({}))
+    authenticate: (provider: Web3.Provider) => {
+      return dispatch(Auth.authenticate(provider))
+    }
   }
 }
 

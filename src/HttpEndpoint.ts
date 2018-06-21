@@ -15,7 +15,9 @@ export default class HttpEndpoint {
   constructor (port: number, keys: Array<string>, routes: Routes) {
     this.app = new Koa()
     this.app.keys = keys
-    this.app.use(session(this.app))
+    this.app.use(session({
+      maxAge: 86400000
+    }, this.app))
     this.app.use(bodyParser())
     this.app.use(routes.middleware)
     this.app.use(routes.allowedMethods)

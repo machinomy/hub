@@ -16,8 +16,18 @@ export default class AuthController {
     let router = new Router()
     router.get('/challenge', this.getChallenge.bind(this))
     router.post('/challenge', this.postChallenge.bind(this))
+    router.get('/me', this.getMe.bind(this))
     this.middleware = router.routes()
     this.allowedMethods = router.allowedMethods()
+  }
+
+  async getMe (ctx: Router.IRouterContext) {
+    if (ctx.session && ctx.session.address) {
+      ctx.response.body = { address: ctx.session.address }
+    } else {
+      log.info('No session found')
+      ctx.response.status = 401
+    }
   }
 
   /**
