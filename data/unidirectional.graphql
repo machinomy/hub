@@ -1,0 +1,28 @@
+type Query {
+  channels: [Channel]
+}
+
+type Payment {
+  channel: Channel
+  sender: String!
+  receiver: String!
+  price: String!
+  value: String!
+  channelValue: String!
+  v: Int!
+  r: String!
+  s: String!
+  meta: String!
+  token: String
+  createdAt: Int!
+}
+
+type Channel {
+  sender: String!
+  receiver: String!
+  channelId: String!
+  value: String!
+  spent: String!
+  state: Int!
+  payments: [Payment]
+}

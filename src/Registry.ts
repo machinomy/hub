@@ -73,7 +73,8 @@ export default class Registry {
 
   @memoize
   async graphqlService (): Promise<GraphqlService> {
-    return new GraphqlService()
+    let machinomy = await this.machinomy()
+    return new GraphqlService(machinomy)
   }
 
   @memoize

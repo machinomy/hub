@@ -9,8 +9,10 @@ export default class GraphqlController {
 
   constructor (gqlService: GraphqlService) {
     let router = new Router()
-    let engine = graphqlKoa({
-      schema: gqlService.schema
+    let engine = graphqlKoa(ctx => {
+      return {
+        schema: gqlService.schema(ctx)
+      }
     })
     router.post('/', engine)
     router.get('/', engine)

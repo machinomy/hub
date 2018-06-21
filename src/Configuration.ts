@@ -26,7 +26,7 @@ export namespace Configuration {
 
     return {
       port: Number(process.env.PORT),
-      address: process.env.HUB_ADDRESS || 'localhost',
+      address: String(process.env.HUB_ADDRESS),
       ethereumUrl: process.env.ETH_RPC_URL || 'http://localhost:8545',
       databaseUrl: process.env.DATABASE_URL || 'postgres://localhost@hub',
       redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',

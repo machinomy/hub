@@ -1,9 +1,0 @@
-type Mutation {
-  createNonce(address: String!): Nonce
-}
-
-type Nonce {
-  value: String!
-  address: String!
-  until: String!
-}
