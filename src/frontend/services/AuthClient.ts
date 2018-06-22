@@ -1,7 +1,7 @@
 import Eth from '../../support/Eth'
 import Backend from './Backend'
 import Authentication from '../../support/Authentication'
-import Address from '../../domain/Address';
+import Address from '../../domain/Address'
 
 export default class AuthClient {
   backend: Backend
@@ -26,7 +26,7 @@ export default class AuthClient {
   }
 
   async identify (): Promise<Address | null> {
-    return await this.backend.auth.getMe()
+    return this.backend.auth.getMe()
   }
 
   async authentication (eth: Eth) {

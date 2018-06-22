@@ -1,13 +1,13 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import State from '../state/State'
 import { RouteComponentProps, withRouter } from 'react-router'
 import Offchain from '../state/Offchain'
 import Address from '../../domain/Address'
-import {SerializedPaymentChannel} from 'machinomy/lib/PaymentChannel'
+import { SerializedPaymentChannel } from 'machinomy/lib/PaymentChannel'
 import * as validate from 'validate.js'
-import styled from 'react-emotion';
+import styled from 'react-emotion'
 
 export interface StateProps {
   address: string
@@ -35,7 +35,6 @@ const Col = styled('td')`
   white-space: nowrap;
   vertical-align: middle;
 `
-
 
 export class Channels extends React.Component<Props, ChannelsState> {
   constructor (props: Props) {

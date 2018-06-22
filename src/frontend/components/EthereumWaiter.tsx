@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { ActionCreator, Dispatch } from 'redux'
 import State from '../state/State'
 import Ethereum from '../state/Ethereum'
-import Auth from '../state/Auth';
-import Address from '../../domain/Address';
+import Auth from '../state/Auth'
+import Address from '../../domain/Address'
 
 function card (message: string) {
   return <div className="container-fixed">

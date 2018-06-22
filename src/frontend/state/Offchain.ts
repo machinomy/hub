@@ -1,9 +1,9 @@
 import { SerializedPaymentChannel } from 'machinomy/lib/PaymentChannel'
-import {ReducerBuilder, reducerWithInitialState} from 'typescript-fsa-reducers';
-import {bindThunkAction} from 'typescript-fsa-redux-thunk';
-import actionCreatorFactory from 'typescript-fsa';
-import Address from '../../domain/Address';
-import Backend from '../services/Backend';
+import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers'
+import { bindThunkAction } from 'typescript-fsa-redux-thunk'
+import actionCreatorFactory from 'typescript-fsa'
+import Address from '../../domain/Address'
+import Backend from '../services/Backend'
 
 const actionCreator = actionCreatorFactory('offchain')
 
@@ -56,7 +56,7 @@ namespace Offchain {
   })
 
   export const reducers: ReducerBuilder<Offchain, Offchain> = reducerWithInitialState<Offchain>(INITIAL)
-    .case(fetchChannelsAction.done, (state, payload) => ({...state, channels: payload.result}))
+    .case(fetchChannelsAction.done, (state, payload) => ({ ...state, channels: payload.result }))
 }
 
 export default Offchain

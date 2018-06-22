@@ -2,11 +2,11 @@ import { GraphQLSchema } from 'graphql'
 import { makeExecutableSchema } from 'graphql-tools'
 import * as fs from 'fs'
 import * as path from 'path'
-import Machinomy from 'machinomy/lib/Machinomy';
-import { PaymentChannelSerde, SerializedPaymentChannel } from 'machinomy/lib/PaymentChannel';
-import {memoize} from 'decko';
-import {Context} from 'koa';
-import Logger from '../support/Logger';
+import Machinomy from 'machinomy/lib/Machinomy'
+import { PaymentChannelSerde, SerializedPaymentChannel } from 'machinomy/lib/PaymentChannel'
+import { memoize } from 'decko'
+import { Context } from 'koa'
+import Logger from '../support/Logger'
 
 const SCHEMA = path.join(__dirname, '../../data/unidirectional.graphql')
 
@@ -21,10 +21,10 @@ export default class GraphqlService {
 
   @memoize
   schema (ctx: Context): GraphQLSchema {
-   return makeExecutableSchema({
-     typeDefs: this.typeDefs(),
-     resolvers: this.resolvers(ctx)
-   })
+    return makeExecutableSchema({
+      typeDefs: this.typeDefs(),
+      resolvers: this.resolvers(ctx)
+    })
   }
 
   @memoize
@@ -35,7 +35,7 @@ export default class GraphqlService {
   async channelsQuery (ctx: Context): Promise<Array<SerializedPaymentChannel>> {
     let channels = await this.machinomy.channels()
     log.info(`channelsQuery: found ${channels.length} channels`)
-    return await channels.map(channel => {
+    return channels.map(channel => {
       return PaymentChannelSerde.instance.serialize(channel)
     })
   }

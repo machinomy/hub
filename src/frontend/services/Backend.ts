@@ -9,7 +9,7 @@ const log = new Logger('backend')
 
 const HUB_URL = process.env.HUB_URL || `${window.location.protocol}//${window.location.host}`
 
-async function get(url: string, params?: Indexed) {
+async function get (url: string, params?: Indexed) {
   let _url = new URL(url)
   if (params) {
     Object.keys(params).forEach(key => _url.searchParams.append(key, params[key]))
@@ -17,8 +17,8 @@ async function get(url: string, params?: Indexed) {
   return fetch(_url.toString(), { credentials: 'include' })
 }
 
-async function post(url: string, params: Indexed) {
-  return await fetch(url, {
+async function post (url: string, params: Indexed) {
+  return fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -63,6 +63,8 @@ export class AuthBackend {
 }
 
 export default class Backend {
+  static instance = new Backend()
+
   auth: AuthBackend
   client: GraphQLClient
 
@@ -76,6 +78,4 @@ export default class Backend {
     log.info('Query {q} got {result}', { q, result })
     return result as A
   }
-
-  static instance = new Backend()
 }

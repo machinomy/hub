@@ -2,9 +2,9 @@ import actionCreatorFactory from 'typescript-fsa'
 import { bindThunkAction } from 'typescript-fsa-redux-thunk'
 import { ReducerBuilder, reducerWithInitialState } from 'typescript-fsa-reducers'
 import * as Web3 from 'web3'
-import AuthClient from '../services/AuthClient';
-import Backend from '../services/Backend';
-import Eth from '../../support/Eth';
+import AuthClient from '../services/AuthClient'
+import Backend from '../services/Backend'
+import Eth from '../../support/Eth'
 import Address from '../../domain/Address'
 
 const actionCreator = actionCreatorFactory('auth')
@@ -30,11 +30,11 @@ namespace Auth {
   const identifyAction = actionCreator.async<{}, Address | null>('identify')
 
   export const identify = bindThunkAction(identifyAction, async () => {
-    return await authClient.identify()
+    return authClient.identify()
   })
 
   export const reducers: ReducerBuilder<Auth, Auth> = reducerWithInitialState<Auth>(INITIAL)
-    .case(authenticateAction.done, (state, payload) => ({...state, address: payload.result }))
+    .case(authenticateAction.done, (state, payload) => ({ ...state, address: payload.result }))
     .case(identifyAction.done, (state, payload) => {
       if (payload.result) {
         return { ...state, address: payload.result }

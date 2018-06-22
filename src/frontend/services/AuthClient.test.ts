@@ -1,8 +1,8 @@
 import * as expect from 'expect'
-import AuthClient from './AuthClient';
-import Backend from './Backend';
-import Eth from '../../support/Eth';
-import IAuthentication from '../../support/IAuthentication';
+import AuthClient from './AuthClient'
+import Backend from './Backend'
+import Eth from '../../support/Eth'
+import IAuthentication from '../../support/IAuthentication'
 
 const ADDRESS = 'ADDRESS'
 const NONCE = 'NONCE'
@@ -13,7 +13,7 @@ let DummyEth = jest.fn<Eth>(() => ({
 }))
 let eth = new DummyEth()
 
-function dummyClient(accept: boolean, identified: boolean = true) {
+function dummyClient (accept: boolean, identified: boolean = true) {
   let postChallengeResult = accept ? Promise.resolve(ADDRESS) : Promise.reject(new Error())
 
   let DummyBackend = jest.fn<Backend>(() => ({
@@ -34,7 +34,6 @@ function dummyClient(accept: boolean, identified: boolean = true) {
 
   return { client, backend, authentication }
 }
-
 
 describe('authenticate', () => {
   test('accept', async () => {
@@ -77,4 +76,3 @@ describe('identify', () => {
     expect(backend.auth.getMe).toHaveBeenCalledWith()
   })
 })
-

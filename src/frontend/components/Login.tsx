@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import State from '../state/State'
 import vynos from 'vynos'
-import {Redirect, RouteComponentProps, withRouter} from 'react-router'
+import { Redirect, RouteComponentProps, withRouter } from 'react-router'
 import Auth from '../state/Auth'
 import * as Web3 from 'web3'
 

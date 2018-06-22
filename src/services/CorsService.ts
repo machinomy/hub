@@ -1,6 +1,6 @@
 import * as cors from '@koa/cors'
-import {Context, Middleware} from 'koa';
-import ICorsService from './ICorsService';
+import { Context, Middleware } from 'koa'
+import ICorsService from './ICorsService'
 
 export default class CorsService implements ICorsService {
   middleware: Middleware
