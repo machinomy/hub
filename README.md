@@ -89,3 +89,5 @@ Node.js 10
 yarnpkg 1.6
 
 PostgreSQL 10
+
+Redis

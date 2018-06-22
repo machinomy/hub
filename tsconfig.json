@@ -3,6 +3,7 @@
     "target": "es2017",
     "module": "commonjs",
     "lib": ["es2017", "dom"],
+    "jsx": "react",
     "sourceMap": true,
     "declaration": true,
     "strict": true,
@@ -10,21 +11,11 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ]
+    "outDir": "dist/"
   },
   "include": [
-    "node_modules/*/index.d.ts",
-    "node_modules/@machinomy/*/index.d.ts",
-    "routes",
-    "test",
-    "bin",
-    "app.ts"
-  ],
-  "exclude": [
-    "node_modules/homedir/index.d.ts",
-    "node_modules/abstract-leveldown/index.d.ts"
+    "./src/**/*",
+    "node_modules/@machinomy/types-web3/index.d.ts",
+    "node_modules/@machinomy/types-ethereumjs-util/index.d.ts"
   ]
 }
