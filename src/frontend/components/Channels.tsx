@@ -7,6 +7,7 @@ import Offchain from '../state/Offchain'
 import Address from '../../domain/Address'
 import {SerializedPaymentChannel} from 'machinomy/lib/PaymentChannel'
 import * as validate from 'validate.js'
+import styled from 'react-emotion';
 
 export interface StateProps {
   address: string
@@ -23,6 +24,18 @@ export type Props = RouteComponentProps<{}> & StateProps & DispatchProps
 export interface ChannelsState {
   isLoading: boolean
 }
+
+const ChannelRow = styled('tr')`
+  font-size: x-small;
+`
+
+const Col = styled('td')`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+`
+
 
 export class Channels extends React.Component<Props, ChannelsState> {
   constructor (props: Props) {
@@ -51,23 +64,21 @@ export class Channels extends React.Component<Props, ChannelsState> {
   }
 
   renderTable () {
-    return <div className="table">
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Spent</th>
-            <th>Value</th>
-            <th>Sender</th>
-            <th>Receiver</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.renderRows()}
-        </tbody>
-      </table>
-    </div>
+    return <table className="table table-striped table-hover table-sm">
+      <thead>
+        <tr className="d-flex">
+          <th scope="col" className="col-3">ID</th>
+          <th scope="col" className="col-1">Spent</th>
+          <th scope="col" className="col-1">Value</th>
+          <th scope="col" className="col-3">Sender</th>
+          <th scope="col" className="col-3">Receiver</th>
+          <th scope="col" className="col-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {this.renderRows()}
+      </tbody>
+    </table>
   }
 
   renderRows () {
@@ -77,16 +88,16 @@ export class Channels extends React.Component<Props, ChannelsState> {
       </tr>
     } else {
       return this.props.channels.map(channel => {
-        return <tr key={channel.channelId}>
-          <td>{channel.channelId}</td>
-          <td>{channel.spent}</td>
-          <td>{channel.value}</td>
-          <td>{channel.sender}</td>
-          <td>{channel.receiver}</td>
-          <td>
+        return <ChannelRow key={channel.channelId} className="d-flex">
+          <Col className="col-3 align-middle">{channel.channelId}</Col>
+          <Col className="col-1 align-middle">{channel.spent}</Col>
+          <Col className="col-1 align-middle">{channel.value}</Col>
+          <Col className="col-3 align-middle">{channel.sender}</Col>
+          <Col className="col-3 align-middle">{channel.receiver}</Col>
+          <Col className="col-1 align-middle">
             {this.closeButton(channel)}
-          </td>
-        </tr>
+          </Col>
+        </ChannelRow>
       })
     }
   }
@@ -98,12 +109,21 @@ export class Channels extends React.Component<Props, ChannelsState> {
   }
 
   closeButton (channel: SerializedPaymentChannel) {
-    if (channel.state == 0) {
-      return <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#closeChannelModal" onClick={() => this.handleCloseChannelButton(channel.channelId) }>
-        Close
-      </button>
-    } else {
-      return null
+    switch (channel.state) {
+      case 0:
+        return <button type="button" className="btn btn-danger btn-sm btn-block" onClick={() => this.handleCloseChannelButton(channel.channelId) }>
+          Close
+        </button>
+      case 1:
+        return <button type="button" className="btn btn-danger btn-sm btn-block" disabled={true}>
+          Close
+        </button>
+      case 2:
+        return <button type="button" className="btn btn-outline-success btn-sm btn-block" disabled={true}>
+          Settled
+        </button>
+      default:
+        return null
     }
   }
 }

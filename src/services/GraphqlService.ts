@@ -3,7 +3,7 @@ import { makeExecutableSchema } from 'graphql-tools'
 import * as fs from 'fs'
 import * as path from 'path'
 import Machinomy from 'machinomy/lib/Machinomy';
-import {PaymentChannelJSON, PaymentChannelSerde, SerializedPaymentChannel} from 'machinomy/lib/PaymentChannel';
+import { PaymentChannelSerde, SerializedPaymentChannel } from 'machinomy/lib/PaymentChannel';
 import {memoize} from 'decko';
 import {Context} from 'koa';
 import Logger from '../support/Logger';

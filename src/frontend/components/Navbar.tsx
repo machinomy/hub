@@ -47,9 +47,6 @@ export class Navbar extends React.Component<DispatchProps> {
           </button>
           <div className="collapse navbar-collapse" id="navbar">
             <ul className="navbar-nav mr-auto">
-              <NavLink to="/payments">
-                Payments
-              </NavLink>
               <NavLink to="/channels">
                 Channels
               </NavLink>
