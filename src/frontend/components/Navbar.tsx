@@ -8,21 +8,15 @@ import { ActionCreator, Dispatch } from 'redux'
 import styled from 'react-emotion'
 
 const NavLink = ({ to, children }: { to: string, children: any }) => {
-  return (
-    <Route
-      path={to}
-      exact={true}
-      children={
-        ({ match }) => {
-          const classNames = `nav-item ${match ? 'active' : ''}`
-          return (
-            <li className={classNames}>
-              <Link to={to} className="nav-link">{children}</Link>
-            </li>
-          )
-        }}
-    />
-  )
+  let child = (p: { match: boolean }) => {
+    const classNames = `nav-item ${p.match ? 'active' : ''}`
+    return (
+      <li className={classNames}>
+        <Link to={to} className="nav-link">{children}</Link>
+      </li>
+    )
+  }
+  return <Route path={to} exact={true} children={child} />
 }
 
 const VynosLink = styled('a')`
