@@ -3,6 +3,7 @@ import Address from '../../domain/Address'
 import HexString from '../../domain/HexString'
 import Logger from '../../support/Logger'
 import Indexed from '../../support/Indexed'
+import { GraphQLClient } from 'graphql-request'
 
 const log = new Logger('backend')
 
@@ -63,8 +64,18 @@ export class AuthBackend {
 
 export default class Backend {
   auth: AuthBackend
+  client: GraphQLClient
 
   constructor () {
     this.auth = new AuthBackend(HUB_URL)
+    this.client = new GraphQLClient(`${HUB_URL}/graphql`)
   }
+
+  async query<A> (q: string): Promise<A> {
+    let result = await this.client.request(q)
+    log.info('Query {q} got {result}', { q, result })
+    return result as A
+  }
+
+  static instance = new Backend()
 }

@@ -24,8 +24,7 @@ namespace Ethereum {
 
   export const findProvider = bindThunkAction(findProviderAction, async () => {
     try {
-      let wallet = await vynos.ready()
-      await wallet.initAccount()
+      await vynos.ready()
       return FindingState.AVAILABLE
     } catch (e) {
       return FindingState.UNAVAILABLE

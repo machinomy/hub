@@ -13,7 +13,7 @@ interface Auth {
   address?: Address
 }
 
-let backend = new Backend()
+let backend = Backend.instance
 let authClient = new AuthClient(backend)
 
 namespace Auth {
@@ -30,10 +30,7 @@ namespace Auth {
   const identifyAction = actionCreator.async<{}, Address | null>('identify')
 
   export const identify = bindThunkAction(identifyAction, async () => {
-    console.log('IDENTIFY')
-    let address = await authClient.identify()
-    console.log('GOT ADDR', address)
-    return address
+    return await authClient.identify()
   })
 
   export const reducers: ReducerBuilder<Auth, Auth> = reducerWithInitialState<Auth>(INITIAL)

@@ -19,8 +19,9 @@ import AuthNonceDatabase from './storage/AuthNonceDatabase'
 import IAuthentication from './support/IAuthentication'
 import Authentication from './support/Authentication'
 import Eth from './support/Eth'
-import ICorsService from './services/ICorsService';
-import CorsService from './services/CorsService';
+import ICorsService from './services/ICorsService'
+import CorsService from './services/CorsService'
+import HDWalletProvider from '@machinomy/hdwallet-provider'
 
 export default class Registry {
   configuration: Configuration
@@ -36,16 +37,18 @@ export default class Registry {
   @memoize
   async web3 (): Promise<Web3> {
     let ethereumUrl = this.configuration.ethereumUrl
-    let provider = new Web3.providers.HttpProvider(ethereumUrl)
+    let mnemonic = this.configuration.mnemonic
+    let provider = new HDWalletProvider(mnemonic, ethereumUrl)
     return new Web3(provider)
   }
 
   @memoize
   async machinomy (): Promise<Machinomy> {
-    let address = this.configuration.address
     let databaseUrl = this.configuration.databaseUrl
-    let web3 = await this.web3()
-    return new Machinomy(address, web3, { databaseUrl: databaseUrl })
+    let eth = await this.eth()
+    let accounts = await eth.getAccounts()
+    let address = accounts[0]
+    return new Machinomy(address, eth.web3, { databaseUrl: databaseUrl })
   }
 
   @memoize

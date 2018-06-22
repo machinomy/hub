@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import State from '../state/State'
 import Ethereum from '../state/Ethereum'
 import { ActionCreator, Dispatch } from 'redux'
+import styled from 'react-emotion'
 
 const NavLink = ({ to, children }: { to: string, children: any }) => {
   return (
@@ -24,6 +25,10 @@ const NavLink = ({ to, children }: { to: string, children: any }) => {
   )
 }
 
+const VynosLink = styled('a')`
+  cursor: pointer;
+`
+
 export interface DispatchProps {
   displayVynos: ActionCreator<Promise<void>>
 }
@@ -36,7 +41,7 @@ export class Navbar extends React.Component<DispatchProps> {
     return <div>
       <nav className="navbar navbar-expand-lg navbar-light" style={navStyle}>
         <div className="container">
-          <a href="#" className="navbar-brand">Hub Dashboard</a>
+          <Link to="/" className="navbar-brand">Hub Dashboard</Link>
           <button className="navbar-toggler" data-toggle="collapse" data-target="#navbar">
             <span className="navbar-toggler-icon" />
           </button>
@@ -51,7 +56,7 @@ export class Navbar extends React.Component<DispatchProps> {
             </ul>
             <ul className="navbar-nav">
               <li className="nav-item pull-right">
-                <a className="nav-link" onClick={this.props.displayVynos}>Vynos</a>
+                <VynosLink className="nav-link" onClick={this.props.displayVynos}>Vynos</VynosLink>
               </li>
             </ul>
           </div>

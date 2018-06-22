@@ -2,6 +2,10 @@ type Query {
   channels: [Channel]
 }
 
+type Mutation {
+  closeChannel(channelId: String!): Channel
+}
+
 type Payment {
   channel: Channel
   sender: String!

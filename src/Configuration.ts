@@ -2,12 +2,12 @@ import * as dotenv from 'dotenv'
 
 export interface Configuration {
   port: number
-  address: string
   ethereumUrl: string
   databaseUrl: string
   redisUrl: string
   isDevelopment: boolean
   sessionKeys: Array<string>
+  mnemonic: string
 }
 
 export namespace Configuration {
@@ -26,12 +26,12 @@ export namespace Configuration {
 
     return {
       port: Number(process.env.PORT),
-      address: String(process.env.HUB_ADDRESS),
       ethereumUrl: process.env.ETH_RPC_URL || 'http://localhost:8545',
       databaseUrl: process.env.DATABASE_URL || 'postgres://localhost@hub',
       redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
       isDevelopment: isDevelopment(),
-      sessionKeys: sessionKeys()
+      sessionKeys: sessionKeys(),
+      mnemonic: process.env.MNEMONIC as string
     }
   }
 }

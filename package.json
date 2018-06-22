@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "@machinomy/hdwallet-provider": "^1.1.0",
     "@machinomy/types-ethereumjs-util": "^0.0.12",
     "@types/chokidar": "^1.7.5",
     "@types/dotenv": "^4.0.3",
@@ -70,6 +71,7 @@
     "express-handlebars": "^3.0.0",
     "figlet": "^1.2.0",
     "graphql": "^0.13.2",
+    "graphql-request": "^1.6.0",
     "graphql-tools": "^3.0.2",
     "handlebars": "^4.0.11",
     "html-webpack-plugin": "^3.2.0",
