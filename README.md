@@ -1,10 +1,21 @@
-# Machinomy hub [![Build Status](https://travis-ci.com/machinomy/hub.svg?token=K1HKiXykkAKA6zQXxNvq&branch=master)](https://travis-ci.com/machinomy/hub)
-Hub provide [Machinomy](https://github.com/machinomy/machinomy) compatible API for payment acceptance and verification.
+# Machinomy Hub [![Build Status](https://travis-ci.com/machinomy/hub.svg?token=K1HKiXykkAKA6zQXxNvq&branch=master)](https://travis-ci.com/machinomy/hub)
+
+Hub provides payments API for [Machinomy](https://github.com/machinomy/machinomy) payment channels.
 
 ## API
-Follow [documentation](https://machinomy.com/documentation/hub-api/index.html) for more information.
+
+Payments API TBD
+
+Administration API TBD
+
+## Installation
+
+TBD
 
 ## Development
+
+TBD
+
 Create .env file at the root of the project. See [example.env](https://github.com/machinomy/hub/blob/master/example.env) for example.
 
 You need running [Ganache](https://github.com/trufflesuite/ganache) on your local machine if use localhost-related ETHEREUM_API
