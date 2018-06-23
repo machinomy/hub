@@ -15,6 +15,7 @@
   },
   "include": [
     "./src/**/*",
+    "./src/globals.d.ts",
     "node_modules/@machinomy/types-web3/index.d.ts",
     "node_modules/@machinomy/types-ethereumjs-util/index.d.ts"
   ]
