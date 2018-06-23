@@ -110,6 +110,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "devDependencies": {
+    "@machinomy/types-ganache-core": "^0.0.1",
     "@machinomy/types-safe-buffer": "^0.0.1",
     "@machinomy/types-truffle-contract": "^0.0.3",
     "@machinomy/types-web3": "^0.0.7",
