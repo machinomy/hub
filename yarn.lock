@@ -183,6 +183,10 @@
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.3.tgz#e8ce5f28c3025a01c6af7fc6d944494903a9e348"
 
+"@types/bluebird@*":
+  version "3.5.20"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.20.tgz#f6363172add6f4eabb8cada53ca9af2781e8d6a1"
+
 "@types/body-parser@*", "@types/body-parser@^1.16.4":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.0.tgz#9f5c9d9bd04bb54be32d5eb9fc0d8c974e6cf58c"
@@ -216,6 +220,13 @@
     "@types/connect" "*"
     "@types/express" "*"
     "@types/keygrip" "*"
+    "@types/node" "*"
+
+"@types/db-migrate-base@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@types/db-migrate-base/-/db-migrate-base-0.0.4.tgz#5448bd0b58a7a84c81a3ee1c7a8f5f23789d338d"
+  dependencies:
+    "@types/bluebird" "*"
     "@types/node" "*"
 
 "@types/debug@^0.0.29":
