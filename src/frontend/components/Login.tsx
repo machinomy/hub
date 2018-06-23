@@ -71,6 +71,7 @@ export class Login extends React.Component<Props, OwnState> {
 
     try {
       let wallet = await vynos.ready()
+      await vynos.display()
       await wallet.initAccount()
       await this.props.authenticate(wallet.provider)
     } catch (e) {
