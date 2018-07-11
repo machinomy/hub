@@ -4,7 +4,9 @@ export interface Configuration {
   port: number
   ethereumUrl: string
   databaseUrl: string
-  redisUrl: string
+  redisUrl: string,
+  redisHost: string,
+  redisPort: number,
   isDevelopment: boolean
   sessionKeys: Array<string>
   mnemonic: string
@@ -29,6 +31,8 @@ export namespace Configuration {
       ethereumUrl: process.env.ETH_RPC_URL || 'http://localhost:8545',
       databaseUrl: process.env.DATABASE_URL || 'postgres://localhost@hub',
       redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
+      redisHost: process.env.REDIS_HOST || 'localhost',
+      redisPort: Number(process.env.REDIS_PORT) || 6379,
       isDevelopment: isDevelopment(),
       sessionKeys: sessionKeys(),
       mnemonic: process.env.MNEMONIC as string

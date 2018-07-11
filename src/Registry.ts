@@ -53,7 +53,10 @@ export default class Registry {
 
   @memoize
   async redisClient (): Promise<RedisClient> {
-    return new RedisClient({ url: this.configuration.redisUrl })
+    return new RedisClient({
+      host: this.configuration.redisHost,
+      port: this.configuration.redisPort
+    })
   }
 
   @memoize
