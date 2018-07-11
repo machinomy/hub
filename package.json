@@ -10,7 +10,7 @@
     "build:frontend": "webpack",
     "dev:frontend": "webpack-dev-server --hot",
     "dev:backend": "nodemon",
-    "start": "ts-node src/bin/hub.ts",
+    "start": "node dist/bin/hub.js",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'",
     "inspect": "node --inspect dist/bin/hub",
     "migrate": "db-migrate up --migrations-dir dist/migrations"
