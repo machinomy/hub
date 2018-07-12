@@ -1,4 +1,6 @@
 import * as dotenv from 'dotenv'
+import fetcher from 'machinomy/lib/util/fetcher'
+import * as pg from 'pg'
 
 export interface Configuration {
   port: number
@@ -37,6 +39,27 @@ export namespace Configuration {
       sessionKeys: sessionKeys(),
       mnemonic: process.env.MNEMONIC as string
     }
+  }
+
+  export function checkEthereumNodeAvailability (url: string): Promise<boolean> {
+    return fetcher.fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        'jsonrpc': '2.0',
+        'method': 'net_version'
+      })
+    }).then(response => response.ok).catch(() => false)
+  }
+
+  export function checkDatabaseAvailability (url: string): Promise<boolean> {
+    const client = new pg.Client({ connectionString: url })
+
+    return client.connect().then(() => true).catch(() => false)
   }
 }
 
