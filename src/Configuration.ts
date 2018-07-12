@@ -1,6 +1,4 @@
 import * as dotenv from 'dotenv'
-import fetcher from 'machinomy/lib/util/fetcher'
-import * as pg from 'pg'
 
 export interface Configuration {
   port: number
