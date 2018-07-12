@@ -27,6 +27,22 @@ export default class Eth {
     })
   }
 
+  async isConnected (): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      this.web3.currentProvider.sendAsync({
+        id: 9999999999,
+        jsonrpc: '2.0',
+        method: 'net_listening',
+        params: []
+      }, err => {
+        err ? resolve(false) : resolve(true)
+      })
+      setTimeout(() => {
+        resolve(false)
+      }, 1000)
+    })
+  }
+
   async sha3 (text: HexString): Promise<HexString> {
     return this.web3.sha3(text)
   }

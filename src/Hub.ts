@@ -17,6 +17,10 @@ export default class Hub {
   }
 
   async start (): Promise<void> {
+    const eth = await this.registry.eth()
+    if ((await eth.isConnected()) !== true) {
+      throw Error(`Ethereum node "${this.registry.configuration.ethereumUrl}" is not available!`)
+    }
     let endpoint = await this.registry.httpEndpoint()
     let running = endpoint.listen()
     log.info('start hub')
