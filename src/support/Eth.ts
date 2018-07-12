@@ -39,7 +39,7 @@ export default class Eth {
       })
       setTimeout(() => {
         resolve(false)
-      }, 1000)
+      }, 4000)
     })
   }
 
