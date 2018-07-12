@@ -18,22 +18,25 @@ export default class Hub {
   }
 
   async start (): Promise<void> {
-    const eth = await this.registry.eth()
-    if ((await eth.isConnected()) !== true) {
-      throw Error(`Ethereum node "${this.registry.configuration.ethereumUrl}" is not available!`)
-    }
-    if ((await this.checkDatabaseAvailability()) !== true) {
-      throw Error(`Database is not available via URL "${this.registry.configuration.databaseUrl}"!`)
-    }
+    await this.ensureEthConnected()
+    await this.ensureDatabaseConnected()
     let endpoint = await this.registry.httpEndpoint()
     let running = endpoint.listen()
     log.info('start hub')
     return running
   }
 
-  checkDatabaseAvailability (): Promise<boolean> {
-    const client = new pg.Client({ connectionString: this.registry.configuration.databaseUrl })
+  async ensureEthConnected () {
+    const eth = await this.registry.eth()
+    if ((await eth.isConnected()) !== true) {
+      throw Error(`Ethereum node "${this.registry.configuration.ethereumUrl}" is not available!`)
+    }
+  }
 
-    return client.connect().then(() => true).catch(() => false)
+  async ensureDatabaseConnected () {
+    const client = new pg.Client({ connectionString: this.registry.configuration.databaseUrl })
+    return client.connect().catch(() => {
+      throw Error(`Database is not available via URL "${this.registry.configuration.databaseUrl}"!`)
+    })
   }
 }
