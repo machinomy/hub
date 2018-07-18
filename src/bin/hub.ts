@@ -8,7 +8,10 @@ async function main () {
   return hub.start()
 }
 
-main().catch(error => {
+main().then(() => {
+  console.info('*** HUB IS RUNNING ***')
+}).catch((error: Error) => {
   console.error(error)
+  console.info('*** HUB WAS TERMINATED ***')
   process.exit(1)
 })
