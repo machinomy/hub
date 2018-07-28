@@ -23,7 +23,6 @@ export default class PaymentsController {
   }
 
   async heartbeat (ctx: Router.IRouterContext) {
-    ctx.response.set('Access-Control-Allow-Origin', ctx.request.origin)
     ctx.response.body = null
   }
 
