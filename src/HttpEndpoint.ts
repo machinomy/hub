@@ -1,6 +1,6 @@
 import * as Koa from 'koa'
 import * as http from 'http'
-import Logger from './support/Logger'
+import Logger from '@machinomy/logger'
 import * as bodyParser from 'koa-bodyparser'
 import * as session from 'koa-session'
 import Routes from './Routes'

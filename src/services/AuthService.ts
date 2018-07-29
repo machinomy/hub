@@ -4,7 +4,7 @@ import AuthNonce from '../domain/AuthNonce'
 import HexString from '../domain/HexString'
 import IAuthNonceDatabase from '../storage/IAuthNonceDatabase'
 import * as uuid from 'uuid'
-import Logger from '../support/Logger'
+import Logger from '@machinomy/logger'
 import IAuthentication from '../support/IAuthentication'
 
 const log = new Logger('service:auth')

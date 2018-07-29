@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import { Middleware } from 'koa'
 import IAuthService from '../services/IAuthService'
-import Logger from '../support/Logger'
+import Logger from '@machinomy/logger'
 
 const log = new Logger('controller:auth')
 

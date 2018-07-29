@@ -1,7 +1,7 @@
 import AuthNonce from '../../domain/AuthNonce'
 import Address from '../../domain/Address'
 import HexString from '../../domain/HexString'
-import Logger from '../../support/Logger'
+import Logger from '@machinomy/logger'
 import Indexed from '../../support/Indexed'
 import { GraphQLClient } from 'graphql-request'
 

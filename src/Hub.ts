@@ -1,7 +1,7 @@
 import * as pg from 'pg'
 import Configuration from './Configuration'
 import Registry from './Registry'
-import Logger from './support/Logger'
+import Logger from '@machinomy/logger'
 
 const log = new Logger('hub')
 

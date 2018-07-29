@@ -6,7 +6,7 @@ import Machinomy from 'machinomy/lib/Machinomy'
 import { PaymentChannelSerde, SerializedPaymentChannel } from 'machinomy/lib/PaymentChannel'
 import { memoize } from 'decko'
 import { Context } from 'koa'
-import Logger from '../support/Logger'
+import Logger from '@machinomy/logger'
 
 const SCHEMA = path.join(__dirname, '../../data/unidirectional.graphql')
 

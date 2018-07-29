@@ -1,6 +1,6 @@
 import * as Router from 'koa-router'
 import Machinomy from 'machinomy'
-import Logger from '../support/Logger'
+import Logger from '@machinomy/logger'
 import { Middleware } from 'koa'
 
 const log = new Logger('hub:payments-router')
