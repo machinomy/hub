@@ -40,6 +40,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
+          'babel-loader',
           'ts-loader', // (or awesome-typescript-loader)
         ],
         exclude: /node_modules/
