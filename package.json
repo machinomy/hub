@@ -10,7 +10,7 @@
     "build:frontend": "webpack",
     "dev:frontend": "webpack-dev-server --hot",
     "dev:backend": "nodemon",
-    "start": "yarn run build && node dist/bin/hub.js",
+    "start": "yarn run build && DEBUG=* node dist/bin/hub.js",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'",
     "inspect": "node --inspect dist/bin/hub",
     "compile-machinomy-migrations": "tsc --moduleResolution node --lib es6,dom,esnext --target es5 node_modules/machinomy/migrations/postgresql/**/*.ts && tsc --moduleResolution node --lib es6,dom,esnext --target es5 node_modules/machinomy/migrations/postgresql/*.ts",
