@@ -11,12 +11,16 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": [
     "./src/**/*",
     "node_modules/@machinomy/types-web3/index.d.ts",
     "node_modules/@machinomy/types-ganache-core/index.d.ts",
-    "node_modules/@machinomy/types-ethereumjs-util/index.d.ts"
+    "node_modules/@machinomy/types-ethereumjs-util/index.d.ts",
+    "node_modules/vynos/dist/dist/types/vynos/index.d.ts"
   ]
 }
