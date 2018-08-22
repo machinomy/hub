@@ -73,6 +73,12 @@ module.exports = {
 
   watchOptions: {
     ignored: /node_modules|dist/
+  },
+  node: {
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty',
+    fs: 'empty'
   }
 }
 
