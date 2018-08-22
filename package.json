@@ -13,10 +13,9 @@
     "start": "yarn run build && DEBUG=* node dist/bin/hub.js",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'",
     "inspect": "node --inspect dist/bin/hub",
-    "compile-machinomy-migrations": "tsc --moduleResolution node --lib es6,dom,esnext --target es5 node_modules/machinomy/migrations/postgresql/**/*.ts && tsc --moduleResolution node --lib es6,dom,esnext --target es5 node_modules/machinomy/migrations/postgresql/*.ts",
     "migrate-machinomy-migrations": "db-migrate up --migrations-dir node_modules/machinomy/migrations/postgresql",
     "migrate-hub-migrations": "db-migrate up --migrations-dir dist/migrations",
-    "migrate": "yarn run compile-machinomy-migrations && yarn run migrate-machinomy-migrations && yarn run migrate-hub-migrations"
+    "migrate": "yarn run migrate-machinomy-migrations && yarn run migrate-hub-migrations"
   },
   "jest": {
     "transform": {
@@ -108,7 +107,7 @@
     "uglifyjs-webpack-plugin": "^1.2.5",
     "uuid": "^3.2.1",
     "validate.js": "^0.12.0",
-    "vynos": "^0.1.11",
+    "vynos": "^0.1.12",
     "web3": "^0.20.0",
     "webpack": "^4.12.0",
     "webpack-dev-server": "^3.1.4"
